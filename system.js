@@ -2438,7 +2438,7 @@ function analyzePhotoAndSetHouse(file, dataUrl, imgW, imgH, statedArea = null, d
     if (adoptedNote) {
         const floorDesc = floors === 3 ? '3-Storey structure' : floors === 2 ? '2-Storey structure' : 'Single-storey bungalow';
         const docName = isBlueprint ? 'Architectural Blueprint Draft' : 'House Photo';
-        adoptedNote.innerHTML = `✨ Adopted <strong>${Math.round(estArea)} m²</strong> &amp; <strong>${floorDesc}</strong> from ${docName} (${floorsReason || detectionSource}). Bill of materials, labor count, and workforce schedule have adopted it with 100% accuracy.`;
+        adoptedNote.innerHTML = `✨ Adopted <strong>${Math.round(estArea)} m²</strong> &amp; <strong>${floorDesc}</strong> from ${docName} (${floorsReason || detectionSource}). Bill of materials, labor count, and workforce schedule have adopted it with 80% accuracy.`;
     }
 }
 
