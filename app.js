@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         floors: 1,
         bedrooms: 2,
         bathrooms: 1,
-        quality: 'standard', // 'standard', 'premium', 'luxury'
+        quality: 'residential', // 'residential', 'commercial', 'industrial', 'agricultural'
         roofType: 'gable', // 'gable', 'flat', 'hip'
         
         // Sandbox Materials unit prices in Philippine Pesos (₱) - Defaults
@@ -931,10 +931,13 @@ document.addEventListener('DOMContentLoaded', () => {
             bathroomInput.value = state.bathrooms;
         }
 
-        // Multipliers based on build specs quality
+        // Multipliers based on land quality
         let qFactor = 1.0;
-        if (state.quality === 'premium') qFactor = 1.45;
-        if (state.quality === 'luxury') qFactor = 2.10;
+        if (state.quality === 'commercial' || state.quality === 'premium') qFactor = 1.35;
+        else if (state.quality === 'industrial') qFactor = 1.20;
+        else if (state.quality === 'agricultural') qFactor = 0.85;
+        else if (state.quality === 'luxury') qFactor = 1.35;
+        else qFactor = 1.0;
 
         // Stories / Floor multipliers
         const floorsMultiplier = 1.0 + (state.floors - 1) * 0.85;
@@ -1076,11 +1079,14 @@ document.addEventListener('DOMContentLoaded', () => {
         calculations.durationWeeks = Math.max(1, Math.ceil(rawDays / 5));
         calculations.durationDays  = calculations.durationWeeks * 5;
 
-        // Calculate area-based cost per sqm — 1 m² = ₱20,000 (Standard base rate)
+        // Calculate area-based cost per sqm based on Land Quality
         // Uses targetAreaInSqm (slider/input value) so cost scales when user changes area
-        let costPerSqm = 20000;  // Standard: ₱20,000/m²
-        if (state.quality === 'premium') costPerSqm = 28000;  // Premium: ₱28,000/m²
-        if (state.quality === 'luxury') costPerSqm = 38500;   // Luxury:  ₱38,500/m²
+        let costPerSqm = 8000;  // Residential(RR): ₱8,000/m²
+        if (state.quality === 'commercial' || state.quality === 'premium') costPerSqm = 11000;   // Commercial(CR): ₱11,000/m²
+        else if (state.quality === 'industrial') costPerSqm = 6500;   // Industrial(I): ₱6,500/m²
+        else if (state.quality === 'agricultural') costPerSqm = 1500; // Agricultural(A): ₱1,500/m²
+        else if (state.quality === 'luxury') costPerSqm = 11000;
+        else costPerSqm = 8000;
         const areaCost = targetAreaInSqm * costPerSqm * floorsMultiplier;
 
         // -------------------------------------------------------
@@ -1159,9 +1165,11 @@ document.addEventListener('DOMContentLoaded', () => {
         summaryTime.innerText = `${calculations.durationWeeks} Weeks`;
         summaryDays.innerText = `${calculations.durationDays} working days (Est. Finish: ${finishDateString})`;
         
-        let qText = 'Standard Specs';
-        if (state.quality === 'premium') qText = 'Premium Specs';
-        if (state.quality === 'luxury') qText = 'Luxury Custom Specs';
+        let qText = 'Residential(RR) — ₱8,000/m²';
+        if (state.quality === 'commercial' || state.quality === 'premium') qText = 'Commercial(CR) — ₱11,000/m²';
+        else if (state.quality === 'industrial') qText = 'Industrial(I) — ₱6,500/m²';
+        else if (state.quality === 'agricultural') qText = 'Agricultural(A) — ₱1,500/m²';
+        else if (state.quality === 'luxury') qText = 'Commercial(CR) — ₱11,000/m²';
         summaryQuality.innerText = qText;
         
         summaryFloors.innerText = `${state.floors} Floor${state.floors > 1 ? 's' : ''}`;
@@ -1893,17 +1901,22 @@ document.addEventListener('DOMContentLoaded', () => {
         pFloors.innerText = `${state.floors} Floor${state.floors > 1 ? 's' : ''}`;
         pBedrooms.innerText = `${state.bedrooms} Bedrooms`;
         pBathrooms.innerText = `${state.bathrooms} Bathrooms`;
-        pQuality.innerText = state.quality.toUpperCase();
+        let qLabel = 'RESIDENTIAL(RR)';
+        if (state.quality === 'commercial' || state.quality === 'premium' || state.quality === 'luxury') qLabel = 'COMMERCIAL(CR)';
+        else if (state.quality === 'industrial') qLabel = 'INDUSTRIAL(I)';
+        else if (state.quality === 'agricultural') qLabel = 'AGRICULTURAL(A)';
+        pQuality.innerText = qLabel;
         
         // Measurement System display
         if (pMeasurement) {
             pMeasurement.innerText = state.unit === 'sqm' ? 'Square Meters (m²)' : 'Square Feet (sq ft)';
         }
 
-        // Area cost rate — 1 m² = ₱20,000 (Standard base rate)
-        let reportCostPerSqm = 20000;
-        if (state.quality === 'premium') reportCostPerSqm = 28000;
-        if (state.quality === 'luxury') reportCostPerSqm = 38500;
+        // Land Quality Area cost rate
+        let reportCostPerSqm = 8000;
+        if (state.quality === 'commercial' || state.quality === 'premium' || state.quality === 'luxury') reportCostPerSqm = 11000;
+        else if (state.quality === 'industrial') reportCostPerSqm = 6500;
+        else if (state.quality === 'agricultural') reportCostPerSqm = 1500;
         const floorsMultForReport = 1.0 + (state.floors - 1) * 0.85;
         const areaInSqmForReport = state.unit === 'sqm' ? state.area : (state.area / 10.764);
         const areaCostForReport = areaInSqmForReport * reportCostPerSqm * floorsMultForReport;
