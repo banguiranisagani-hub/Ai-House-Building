@@ -172,41 +172,51 @@
                     <input type="hidden" id="minusBath">
                     <input type="hidden" id="plusBath">
 
-                    <!-- Standard/Premium/Luxury Selection -->
+                    <!-- Land Quality Selection -->
                     <div class="form-group">
-                        <label class="input-label">Build Specification &amp; Quality</label>
+                        <label class="input-label">Land Quality</label>
                         <div class="quality-picker">
-                            <label class="quality-option active" id="specStandard">
-                                <input type="radio" name="quality" value="standard" checked>
+                            <label class="quality-option active" id="specResidential">
+                                <input type="radio" name="quality" value="residential" checked>
                                 <div class="opt-content">
                                     <div class="opt-header">
-                                        <i class="fa-solid fa-hammer"></i>
-                                        <span>Standard</span>
+                                        <i class="fa-solid fa-house"></i>
+                                        <span>Residential(RR) — ₱8,000/m²</span>
                                     </div>
-                                    <span class="opt-desc">Durable, cost-efficient, standard Land quality</span>
+                                    <span class="opt-desc">Durable, cost-efficient, standard residential housing zone</span>
                                 </div>
                             </label>
 
-                            <label class="quality-option" id="specPremium">
-                                <input type="radio" name="quality" value="premium">
+                            <label class="quality-option" id="specCommercial">
+                                <input type="radio" name="quality" value="commercial">
                                 <div class="opt-content">
                                     <div class="opt-header">
-                                        <i class="fa-solid fa-gem"></i>
-                                        <span>Premium</span>
+                                        <i class="fa-solid fa-building"></i>
+                                        <span>Commercial(CR) — ₱11,000/m²</span>
                                     </div>
-                                    <span class="opt-desc">High-grade finishing, modern styles, enhanced
-                                       Land quality</span>
+                                    <span class="opt-desc">High-grade finishing, modern commercial &amp; business district</span>
                                 </div>
                             </label>
 
-                            <label class="quality-option" id="specLuxury">
-                                <input type="radio" name="quality" value="luxury">
+                            <label class="quality-option" id="specIndustrial">
+                                <input type="radio" name="quality" value="industrial">
                                 <div class="opt-content">
                                     <div class="opt-header">
-                                        <i class="fa-solid fa-crown"></i>
-                                        <span>Luxury</span>
+                                        <i class="fa-solid fa-industry"></i>
+                                        <span>Industrial(I) — ₱6,500/m²</span>
                                     </div>
-                                    <span class="opt-desc">Elite craftsmanship, designer finishes, High Land quality</span>
+                                    <span class="opt-desc">Heavy-duty structural framing, manufacturing &amp; warehouse zone</span>
+                                </div>
+                            </label>
+
+                            <label class="quality-option" id="specAgricultural">
+                                <input type="radio" name="quality" value="agricultural">
+                                <div class="opt-content">
+                                    <div class="opt-header">
+                                        <i class="fa-solid fa-seedling"></i>
+                                        <span>Agricultural(A) — ₱1,500/m²</span>
+                                    </div>
+                                    <span class="opt-desc">Economical rural framing, farming &amp; agricultural land zone</span>
                                 </div>
                             </label>
                         </div>
@@ -600,7 +610,8 @@
                                     <h4
                                         style="font-family:var(--font-heading);font-size:1rem;color:var(--slate-800);font-weight:700;margin:0;">
                                         <i class="fa-solid fa-hard-hat" style="color:var(--sky-600);"></i> Construction
-                                        Workforce Allocation</h4>
+                                        Workforce Allocation
+                                    </h4>
                                     <span
                                         style="font-size:0.75rem;background:var(--sky-50);color:var(--sky-700);border:1px solid var(--sky-200);border-radius:var(--radius-sm);padding:0.25rem 0.6rem;font-weight:700;"
                                         id="totalWorkersBadge">Total: 13 Workers</span>
@@ -618,7 +629,8 @@
                                             <div
                                                 style="width:34px;height:34px;background:linear-gradient(135deg,#0ea5e9,#0284c7);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                                                 <i class="fa-solid fa-user-tie"
-                                                    style="color:white;font-size:0.85rem;"></i></div>
+                                                    style="color:white;font-size:0.85rem;"></i>
+                                            </div>
                                             <div>
                                                 <div
                                                     style="font-weight:700;color:var(--slate-800);font-size:0.85rem;font-family:var(--font-heading);">
@@ -663,7 +675,8 @@
                                             <div
                                                 style="width:34px;height:34px;background:linear-gradient(135deg,#22c55e,#16a34a);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                                                 <i class="fa-solid fa-trowel-bricks"
-                                                    style="color:white;font-size:0.85rem;"></i></div>
+                                                    style="color:white;font-size:0.85rem;"></i>
+                                            </div>
                                             <div>
                                                 <div
                                                     style="font-weight:700;color:var(--slate-800);font-size:0.85rem;font-family:var(--font-heading);">
@@ -708,7 +721,8 @@
                                             <div
                                                 style="width:34px;height:34px;background:linear-gradient(135deg,#f59e0b,#d97706);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                                                 <i class="fa-solid fa-hammer"
-                                                    style="color:white;font-size:0.85rem;"></i></div>
+                                                    style="color:white;font-size:0.85rem;"></i>
+                                            </div>
                                             <div>
                                                 <div
                                                     style="font-weight:700;color:var(--slate-800);font-size:0.85rem;font-family:var(--font-heading);">
@@ -753,7 +767,8 @@
                                             <div
                                                 style="width:34px;height:34px;background:linear-gradient(135deg,#6366f1,#4f46e5);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                                                 <i class="fa-solid fa-screwdriver-wrench"
-                                                    style="color:white;font-size:0.85rem;"></i></div>
+                                                    style="color:white;font-size:0.85rem;"></i>
+                                            </div>
                                             <div>
                                                 <div
                                                     style="font-weight:700;color:var(--slate-800);font-size:0.85rem;font-family:var(--font-heading);">
@@ -798,7 +813,8 @@
                                             <div
                                                 style="width:34px;height:34px;background:linear-gradient(135deg,#64748b,#475569);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                                                 <i class="fa-solid fa-person-digging"
-                                                    style="color:white;font-size:0.85rem;"></i></div>
+                                                    style="color:white;font-size:0.85rem;"></i>
+                                            </div>
                                             <div>
                                                 <div
                                                     style="font-weight:700;color:var(--slate-800);font-size:0.85rem;font-family:var(--font-heading);">
@@ -889,7 +905,8 @@
                                             <div
                                                 style="width:34px;height:34px;background:linear-gradient(135deg,#06b6d4,#0891b2);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                                                 <i class="fa-solid fa-faucet-drip"
-                                                    style="color:white;font-size:0.85rem;"></i></div>
+                                                    style="color:white;font-size:0.85rem;"></i>
+                                            </div>
                                             <div>
                                                 <div
                                                     style="font-weight:700;color:var(--slate-800);font-size:0.85rem;font-family:var(--font-heading);">
@@ -934,7 +951,8 @@
                                             <div
                                                 style="width:34px;height:34px;background:linear-gradient(135deg,#f43f5e,#e11d48);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                                                 <i class="fa-solid fa-paintbrush"
-                                                    style="color:white;font-size:0.85rem;"></i></div>
+                                                    style="color:white;font-size:0.85rem;"></i>
+                                            </div>
                                             <div>
                                                 <div
                                                     style="font-weight:700;color:var(--slate-800);font-size:0.85rem;font-family:var(--font-heading);">
@@ -1007,7 +1025,8 @@
                     style="margin-bottom: 0.8rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--slate-100);">
                     <h2
                         style="font-size: 1.15rem; color: var(--slate-900); font-family: var(--font-heading); font-weight: 700;">
-                        <i class="fa-solid fa-earth-philippines text-sky"></i> GIS Hazard Auditor Analysis</h2>
+                        <i class="fa-solid fa-earth-philippines text-sky"></i> GIS Hazard Auditor Analysis
+                    </h2>
                 </div>
                 <div class="card-body" style="font-size: 0.8rem; color: var(--slate-600); line-height: 1.5;">
                     <p>Our **Geospatial Information System (GIS)** audits environmental safety parameters to
@@ -1038,7 +1057,8 @@
                     style="margin-bottom: 0.8rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--slate-100);">
                     <h2
                         style="font-size: 1.15rem; color: var(--slate-900); font-family: var(--font-heading); font-weight: 700;">
-                        <i class="fa-solid fa-chart-line text-orange"></i> Material Cost Trends &amp; Forecasts</h2>
+                        <i class="fa-solid fa-chart-line text-orange"></i> Material Cost Trends &amp; Forecasts
+                    </h2>
                 </div>
                 <div class="card-body" style="font-size: 0.8rem; color: var(--slate-600); line-height: 1.5;">
                     <p>Time series forecasting monitors regional raw materials inflation over next month's outlook:</p>
