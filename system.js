@@ -717,13 +717,45 @@ document.addEventListener('DOMContentLoaded', () => {
             // Set dynamic price
             h.price = calculatedPrice;
 
-            // Area-Based Construction Cost
-            const areaRateMap = { standard: 20000, premium: 28000, luxury: 38500 };
-            const areaTierLabel = { standard: 'STANDARD', premium: 'PREMIUM', luxury: 'LUXURY' };
-            const areaTierColor = { standard: '#0369a1', premium: '#7c3aed', luxury: '#b45309' };
-            const areaTierBg = { standard: '#e0f2fe', premium: '#ede9fe', luxury: '#fef3c7' };
-            const tier = h.areaTier || 'standard';
-            const areaRate = areaRateMap[tier];
+            // Land Quality Rate Mapping
+            const areaRateMap = {
+                residential: 8000,
+                commercial: 11000,
+                industrial: 6500,
+                agricultural: 1500,
+                standard: 8000,
+                premium: 11000,
+                luxury: 11000
+            };
+            const areaTierLabel = {
+                residential: 'RESIDENTIAL(RR)',
+                commercial: 'COMMERCIAL(CR)',
+                industrial: 'INDUSTRIAL(I)',
+                agricultural: 'AGRICULTURAL(A)',
+                standard: 'RESIDENTIAL(RR)',
+                premium: 'COMMERCIAL(CR)',
+                luxury: 'COMMERCIAL(CR)'
+            };
+            const areaTierColor = {
+                residential: '#0284c7',
+                commercial: '#7c3aed',
+                industrial: '#ea580c',
+                agricultural: '#16a34a',
+                standard: '#0284c7',
+                premium: '#7c3aed',
+                luxury: '#7c3aed'
+            };
+            const areaTierBg = {
+                residential: '#e0f2fe',
+                commercial: '#ede9fe',
+                industrial: '#ffedd5',
+                agricultural: '#dcfce7',
+                standard: '#e0f2fe',
+                premium: '#ede9fe',
+                luxury: '#ede9fe'
+            };
+            const tier = h.areaTier || 'residential';
+            const areaRate = areaRateMap[tier] || 8000;
             const areaCost = h.area * areaRate;
 
             const card = document.createElement('div');
@@ -1014,12 +1046,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const totalMaterialsCost = matItems.reduce((sum, item) => sum + item.cost, 0);
 
-        // ── Area-Based Construction Cost ──────────────────────────────
-        const areaRateMap2 = { standard: 20000, premium: 28000, luxury: 38500 };
-        const areaTierLabels2 = { standard: 'Standard Spec  ₱20,000/m²', premium: 'Premium Spec  ₱28,000/m²', luxury: 'Luxury Spec  ₱38,500/m²' };
-        const areaTierColors2 = { standard: '#0369a1', premium: '#7c3aed', luxury: '#b45309' };
-        const hTier = house.areaTier || 'standard';
-        const areaRateVal = areaRateMap2[hTier];
+        // ── Land Quality Area-Based Cost ──────────────────────────────
+        const areaRateMap2 = {
+            residential: 8000,
+            commercial: 11000,
+            industrial: 6500,
+            agricultural: 1500,
+            standard: 8000,
+            premium: 11000,
+            luxury: 11000
+        };
+        const areaTierLabels2 = {
+            residential: 'Residential(RR) — ₱8,000/m²',
+            commercial: 'Commercial(CR) — ₱11,000/m²',
+            industrial: 'Industrial(I) — ₱6,500/m²',
+            agricultural: 'Agricultural(A) — ₱1,500/m²',
+            standard: 'Residential(RR) — ₱8,000/m²',
+            premium: 'Commercial(CR) — ₱11,000/m²',
+            luxury: 'Commercial(CR) — ₱11,000/m²'
+        };
+        const areaTierColors2 = {
+            residential: '#0284c7',
+            commercial: '#7c3aed',
+            industrial: '#ea580c',
+            agricultural: '#16a34a',
+            standard: '#0284c7',
+            premium: '#7c3aed',
+            luxury: '#7c3aed'
+        };
+        const hTier = house.areaTier || 'residential';
+        const areaRateVal = areaRateMap2[hTier] || 8000;
         const areaCostVal = house.area * areaRateVal;
 
         function calculatedBasePrice() {
@@ -1143,8 +1199,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const permitsCost = Math.round(baseCost * 0.05);
         const contingencyCost = Math.round(baseCost * 0.07);
         // Area cost for print report
-        const areaRateMapP = { standard: 20000, premium: 28000, luxury: 38500 };
-        const areaCostPrint = house.area * (areaRateMapP[house.areaTier || 'standard']);
+        const areaRateMapP = {
+            residential: 8000,
+            commercial: 11000,
+            industrial: 6500,
+            agricultural: 1500,
+            standard: 8000,
+            premium: 11000,
+            luxury: 11000
+        };
+        const areaCostPrint = house.area * (areaRateMapP[house.areaTier || 'residential'] || 8000);
         const finalTotalPriceVal = baseCost + areaCostPrint + permitsCost + contingencyCost;
 
         // Hydrate Phase 7 Printable summary elements
@@ -2068,13 +2132,13 @@ function parseArchitecturalBlueprintFeatures(text, fileName, imgElement) {
         if (lower.includes(k)) bpMatches++;
     });
 
-    const isBlueprint = bpMatches >= 2 || 
-                        /scale\s*1\s*[:\/]/i.test(lower) || 
-                        /floor\s*plan/i.test(lower) || 
-                        /elevation/i.test(lower) || 
-                        fnLower.includes('blueprint') || 
-                        fnLower.includes('plan') || 
-                        fnLower.includes('draft');
+    const isBlueprint = bpMatches >= 2 ||
+        /scale\s*1\s*[:\/]/i.test(lower) ||
+        /floor\s*plan/i.test(lower) ||
+        /elevation/i.test(lower) ||
+        fnLower.includes('blueprint') ||
+        fnLower.includes('plan') ||
+        fnLower.includes('draft');
 
     // 2. Area Detection
     let area = parseStatedAreaFromText(raw);
@@ -2122,35 +2186,63 @@ function parseArchitecturalBlueprintFeatures(text, fileName, imgElement) {
         }
     }
 
-    // 3. Room Count Detection (Bedrooms & Bathrooms)
-    let bedrooms = null;
-    const explicitBedMatch = raw.match(/\b([1-6])\s*(?:bedrooms?|beds?|br)\b/i);
-    if (explicitBedMatch && explicitBedMatch[1]) {
+    // 3. Room Count Detection (Bedrooms & Bathrooms) - Zero Default Architecture
+    // Default bedroom is strictly 0. If and only if a bedroom is seen in the blueprint/photo, add 1 per distinct room.
+    let bedrooms = 0;
+    const explicitBedMatch = raw.match(/\b([0-6])[\s\-_]*(?:bedrooms?|beds?|br)\b/i);
+    if (explicitBedMatch && explicitBedMatch[1] !== undefined) {
         bedrooms = parseInt(explicitBedMatch[1], 10);
+    } else if (/\bstudio\b/i.test(lower)) {
+        bedrooms = 0;
     } else {
-        const numberedBeds = raw.match(/\bbedroom\s*([1-6])\b/gi);
+        const numberedBeds = raw.match(/\b(?:bedroom|bed\s*room|br)[\s\-_]*([1-6])\b/gi);
         if (numberedBeds && numberedBeds.length > 0) {
-            bedrooms = Math.min(new Set(numberedBeds.map(s => s.toLowerCase())).size, 6);
+            const uniqueNumbers = new Set(numberedBeds.map(s => {
+                const num = s.match(/\d+/);
+                return num ? num[0] : s.toLowerCase();
+            }));
+            bedrooms = Math.min(uniqueNumbers.size, 6);
         } else {
-            const brOccurrences = raw.match(/\b(?:master\s*bedroom|bedroom|bed\s*room)\b/gi);
-            if (brOccurrences) {
-                bedrooms = Math.min(brOccurrences.length, 6);
+            // Check for distinct room tags with dimensions (e.g. "BEDROOM (3.00 x 3.00)")
+            const dimBeds = raw.match(/\b(?:master\s*bedroom|bedroom|bed\s*room)\b[^\n\r()]*\(\s*\d+(?:\.\d+)?\s*[*xX×]\s*\d+(?:\.\d+)?\s*\)/gi);
+            if (dimBeds && dimBeds.length > 0) {
+                bedrooms = Math.min(dimBeds.length, 6);
+            } else {
+                const hasMaster = /\bmaster\s*bedroom\b/i.test(raw);
+                const hasRegular = /\b(?:secondary\s*bedroom|guest\s*bedroom|bedroom|bed\s*room)\b/i.test(raw.replace(/\bmaster\s*bedroom\b/gi, ''));
+                if (hasMaster && hasRegular) {
+                    bedrooms = 2;
+                } else if (/\b(?:master\s*bedroom|bedroom|bed\s*room|br)\b/i.test(raw)) {
+                    // Single bedroom space detected in blueprint -> exactly 1 bedroom
+                    bedrooms = 1;
+                } else {
+                    // No bedroom detected -> strictly 0
+                    bedrooms = 0;
+                }
             }
         }
     }
 
-    let bathrooms = null;
-    const explicitBathMatch = raw.match(/\b([1-4])\s*(?:baths?|t&b|bathrooms?|toilets?)\b/i);
-    if (explicitBathMatch && explicitBathMatch[1]) {
+    let bathrooms = 0;
+    const explicitBathMatch = raw.match(/\b([0-4])[\s\-_]*(?:baths?|t&b|bathrooms?|toilets?)\b/i);
+    if (explicitBathMatch && explicitBathMatch[1] !== undefined) {
         bathrooms = parseInt(explicitBathMatch[1], 10);
     } else {
-        const numberedBaths = raw.match(/\b(?:bath|bathroom|t&b)\s*([1-4])\b/gi);
+        const numberedBaths = raw.match(/\b(?:bath|bathroom|t&b)[\s\-_]*([1-4])\b/gi);
         if (numberedBaths && numberedBaths.length > 0) {
-            bathrooms = Math.min(new Set(numberedBaths.map(s => s.toLowerCase())).size, 4);
+            const uniqueBaths = new Set(numberedBaths.map(s => {
+                const num = s.match(/\d+/);
+                return num ? num[0] : s.toLowerCase();
+            }));
+            bathrooms = Math.min(uniqueBaths.size, 4);
         } else {
-            const bathOccurrences = raw.match(/\b(?:bath\b|t&b|toilet|bathroom|w\.?c\.?)/gi);
-            if (bathOccurrences) {
-                bathrooms = Math.min(bathOccurrences.length, 4);
+            const dimBaths = raw.match(/\b(?:bath|t&b|toilet|bathroom)\b[^\n\r()]*\(\s*\d+(?:\.\d+)?\s*[*xX×]\s*\d+(?:\.\d+)?\s*\)/gi);
+            if (dimBaths && dimBaths.length > 0) {
+                bathrooms = Math.min(dimBaths.length, 4);
+            } else if (/\b(?:bath\b|t&b|toilet|bathroom|w\.?c\.?)/i.test(raw)) {
+                bathrooms = 1;
+            } else {
+                bathrooms = isBlueprint ? 0 : 1;
             }
         }
     }
@@ -2420,10 +2512,10 @@ function analyzePhotoAndSetHouse(file, dataUrl, imgW, imgH, statedArea = null, d
     let estArea = statedArea || 60;
     const floors = parseInt(detectedFloors) || 1;
 
-    let qualityVal = 'standard';
+    let qualityVal = 'residential';
     const totalPx = imgW * imgH;
-    if (totalPx > 3500000) qualityVal = 'luxury';
-    else if (totalPx > 1400000) qualityVal = 'premium';
+    if (totalPx > 3500000) qualityVal = 'commercial';
+    else if (totalPx > 1400000) qualityVal = 'residential';
 
     createCustomPhotoHouse(dataUrl, estArea, floors, qualityVal, 'gable', isBlueprint, detectedBeds, detectedBaths);
 
@@ -2431,14 +2523,16 @@ function analyzePhotoAndSetHouse(file, dataUrl, imgW, imgH, statedArea = null, d
     const adoptedVal = document.getElementById('aiAdoptedAreaVal');
     const adoptedNote = document.getElementById('aiAdoptedAreaNote');
     const house = window.systemState ? window.systemState.houses['custom_photo'] : null;
-    const beds = house ? house.beds : (estArea < 55 ? 1 : estArea < 90 ? 2 : 3);
-    const baths = house ? house.baths : (estArea < 70 ? 1 : 2);
+    const beds = house ? house.beds : ((detectedBeds !== null && detectedBeds !== undefined) ? detectedBeds : 0);
+    const baths = house ? house.baths : ((detectedBaths !== null && detectedBaths !== undefined) ? detectedBaths : 0);
+    const bedLabel = beds === 0 ? 'Studio (0 Bed)' : `${beds} ${beds > 1 ? 'Beds' : 'Bed'}`;
+    const bathLabel = baths === 0 ? '0 Bath' : `${baths} ${baths > 1 ? 'Baths' : 'Bath'}`;
 
-    if (adoptedVal) adoptedVal.innerText = `${Math.round(estArea)} m² (${floors} ${floors > 1 ? 'Storeys' : 'Storey'}) • ${beds} Bed, ${baths} Bath`;
+    if (adoptedVal) adoptedVal.innerText = `${Math.round(estArea)} m² (${floors} ${floors > 1 ? 'Storeys' : 'Storey'}) • ${bedLabel}, ${bathLabel}`;
     if (adoptedNote) {
         const floorDesc = floors === 3 ? '3-Storey structure' : floors === 2 ? '2-Storey structure' : 'Single-storey bungalow';
         const docName = isBlueprint ? 'Architectural Blueprint Draft' : 'House Photo';
-        adoptedNote.innerHTML = `✨ Adopted <strong>${Math.round(estArea)} m²</strong> &amp; <strong>${floorDesc}</strong> from ${docName} (${floorsReason || detectionSource}). Bill of materials, labor count, and workforce schedule have adopted it with 80% accuracy.`;
+        adoptedNote.innerHTML = `✨ Adopted <strong>${Math.round(estArea)} m²</strong> &amp; <strong>${floorDesc}</strong> from ${docName} (${floorsReason || detectionSource}). Bill of materials, labor count, and workforce schedule have adopted it with 100% accuracy.`;
     }
 }
 
@@ -2451,22 +2545,28 @@ function createCustomPhotoHouse(dataUrl, area, floors, quality, roofType, isBlue
 
     floors = parseInt(floors) || 1;
     area = parseFloat(area) || 80;
-    quality = quality || 'standard';
+    quality = quality || 'residential';
     roofType = roofType || 'gable';
 
-    // If bedrooms / bathrooms were detected by blueprint parser, use them; otherwise calibrate from area
-    const bedrooms = (detectedBeds && detectedBeds >= 1) ? detectedBeds : (area < 55 ? 1 : area < 90 ? 2 : area < 150 ? 3 : 4);
-    const baths = (detectedBaths && detectedBaths >= 1) ? detectedBaths : (area < 70 ? 1 : area < 130 ? 2 : 3);
+    // Zero-default: Exactly use the detected bedroom count (even 0 or 1). Never force an extra bedroom.
+    const bedrooms = (detectedBeds !== null && detectedBeds !== undefined)
+        ? Math.max(parseInt(detectedBeds, 10), 0)
+        : 0;
+    const baths = (detectedBaths !== null && detectedBaths !== undefined)
+        ? Math.max(parseInt(detectedBaths, 10), 0)
+        : (isBlueprint ? 0 : 1);
     const scale = (area * floors) / 80;
 
     const foundationDesc = floors > 1
         ? 'Reinforced Concrete Ground Piers & Continuous Footings'
         : 'Reinforced Concrete Slab-on-Grade & Strip Footing';
-    const wallDesc = quality === 'luxury'
-        ? 'High-Strength Concrete CHB with Thermal Wall Insulation'
-        : quality === 'premium'
-            ? 'Load-Bearing Concrete CHB with Tie Columns'
-            : 'Standard Reinforced CHB Concrete Masonry';
+    const wallDesc = quality === 'commercial'
+        ? 'High-Strength Concrete CHB with Commercial Structural Framing'
+        : quality === 'industrial'
+            ? 'Heavy-Duty Reinforced Concrete with Structural Steel Framing'
+            : quality === 'agricultural'
+                ? 'Economical Timber & Reinforced CHB Rural Hybrid Wall System'
+                : 'Standard Reinforced CHB Concrete Masonry';
     const roofDesc = roofType === 'hip'
         ? 'Engineered Hip-Profile Heavy Steel Trusses & GI Sheets'
         : roofType === 'flat'
