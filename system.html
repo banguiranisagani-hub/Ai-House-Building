@@ -130,8 +130,8 @@
                         <div class="form-group" style="margin-bottom: 1.25rem;">
                             <label for="lotDetails" class="input-label">Specific Lot Info / Barangay Zone
                                 (Optional)</label>
-                            <input type="text" id="lotDetails" value="Zone 3, Lot 14-B"
-                                placeholder="e.g. Block 5, Lot 12, Golden Hills"
+                            <input type="text" id="lotDetails" value=""
+                                placeholder="e.g. Zone 3, Lot 14-B"
                                 style="width: 100%; padding: 0.6rem 0.8rem; border: 2px solid var(--sky-200); border-radius: var(--radius-sm); outline: none; font-family: var(--font-body); font-weight: 600; color: var(--slate-800); background: white; font-size: 0.85rem;">
                         </div>
 
@@ -203,6 +203,41 @@
                         <p class="section-desc" style="margin-bottom: 1rem;">Based on your environmental audit, the AI
                             has generated suitable house presets. Prices emphasize safety compatibility ratings
                             (Mindanao calibration).</p>
+
+                        <!-- Valuation Scope Switch for Recommended Houses -->
+                        <div id="step1CostModeSwitchBar" class="cost-mode-switch-card"
+                            style="margin-bottom: 1.25rem; padding: 0.75rem 1rem;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <span
+                                    style="background: var(--sky-500); color: white; width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14,165,233,0.3);">
+                                    <i class="fa-solid fa-calculator"></i>
+                                </span>
+                                <div>
+                                    <div
+                                        style="font-size: 0.84rem; font-weight: 800; color: var(--slate-800); font-family: var(--font-heading); display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
+                                        <span>Valuation Scope</span>
+                                        <span id="step1CostModeBadge"
+                                            style="font-size: 0.62rem; padding: 0.12rem 0.5rem; border-radius: 12px; font-weight: 800; background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd;">FULL
+                                            VALUATION</span>
+                                    </div>
+                                    <div id="step1CostModeSubtext" style="font-size: 0.72rem; color: var(--slate-500);">
+                                        Includes Land Quality Area Cost + Government Permits (5%) + Contingency (7%).
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; align-items: center; gap: 0.65rem;">
+                                <span style="font-size: 0.74rem; font-weight: 700; color: var(--slate-700);">
+                                    Remove Area Cost:
+                                </span>
+                                <label class="cost-switch-lbl"
+                                    title="Click to toggle: remove Area Cost and calculate only Materials + Labor">
+                                    <input type="checkbox" id="step1CostModeToggle"
+                                        onchange="toggleAreaCostExclusion(this.checked)">
+                                    <span class="cost-switch-visual"></span>
+                                </label>
+                            </div>
+                        </div>
 
                         <div class="ai-house-selector-grid" id="houseSelectionGrid">
                             <!-- Populated dynamically by system.js to add standard and wood-related options -->
@@ -298,6 +333,46 @@
                             workforce plan</p>
                     </div>
                 </div>
+
+                <!-- Live Location Assessment Context for Photo Analyzer -->
+                <div id="paLocationContextBanner"
+                    style="background: white; border: 1.5px solid var(--sky-200); border-radius: var(--radius-md); padding: 0.85rem 1.1rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; box-shadow: 0 2px 6px rgba(14,165,233,0.06);">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span
+                            style="background: linear-gradient(135deg, #0ea5e9, #7c3aed); color: white; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14,165,233,0.3);">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </span>
+                        <div>
+                            <div
+                                style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: var(--slate-500);">
+                                Target Assessment Location for Photo / Blueprint
+                            </div>
+                            <div id="paActiveLocationText"
+                                style="font-size: 0.88rem; font-weight: 800; color: var(--slate-800); font-family: var(--font-heading);">
+                                San Vicente, Panabo City, Davao del Norte
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
+                        <span id="paFloodPill"
+                            style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 12px; background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0;">
+                            <i class="fa-solid fa-water"></i> Flood: Low
+                        </span>
+                        <span id="paSeismicPill"
+                            style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 12px; background: #fff7ed; color: #ea580c; border: 1px solid #fed7aa;">
+                            <i class="fa-solid fa-house-crack"></i> Quake: Moderate
+                        </span>
+                        <span id="paSoilPill"
+                            style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 12px; background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0;">
+                            <i class="fa-solid fa-mountain"></i> Soil: Good
+                        </span>
+                        <span id="paRiskStatusPill"
+                            style="font-size: 0.68rem; font-weight: 800; padding: 0.2rem 0.65rem; border-radius: 12px; background: #ffedd5; color: #c2410c; border: 1px solid #fdba74;">
+                            Moderate Risk
+                        </span>
+                    </div>
+                </div>
+
                 <!-- Upload Zone -->
                 <div id="photoUploadCard"
                     style="background:linear-gradient(135deg,rgba(14,165,233,0.04),rgba(124,58,237,0.03));border:2px dashed rgba(14,165,233,0.35);border-radius:var(--radius-lg);padding:2.2rem 2rem;text-align:center;cursor:pointer;transition:all 0.25s ease;position:relative;"
@@ -411,6 +486,11 @@
                                 <i class="fa-solid fa-camera" style="color: #38bdf8;"></i> AI RENDER &bull; Click to
                                 Print
                             </span>
+                            <span id="step2PhotoSafetyBadge"
+                                style="position: absolute; bottom: 0.6rem; right: 0.6rem; background: rgba(2, 132, 199, 0.9); color: white; padding: 0.25rem 0.65rem; border-radius: 4px; font-size: 0.72rem; font-weight: 800; font-family: var(--font-heading); display: flex; align-items: center; gap: 0.35rem; box-shadow: 0 2px 6px rgba(0,0,0,0.4);">
+                                <i class="fa-solid fa-shield"></i> <span id="step2PhotoSafetyBadgeText">94%
+                                    Safety</span>
+                            </span>
                         </div>
                         <div id="step2BlueprintFrame" class="blueprint-visual-frame"
                             style="border: 2px solid var(--sky-100); border-radius: var(--radius-md); overflow: hidden; background: #0b1329; height: 380px; position: relative;">
@@ -471,6 +551,41 @@
                         </div>
                     </div>
 
+                    <!-- Cost Mode Switcher (Removes or Includes Land Quality Area Cost & Overhead) -->
+                    <div id="costModeSwitchBar" class="cost-mode-switch-card">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span
+                                style="background: var(--sky-500); color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14,165,233,0.3);">
+                                <i class="fa-solid fa-calculator"></i>
+                            </span>
+                            <div>
+                                <div
+                                    style="font-size: 0.88rem; font-weight: 800; color: var(--slate-800); font-family: var(--font-heading); display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                                    <span>Estimation Scope Switch</span>
+                                    <span id="costModeBadge"
+                                        style="font-size: 0.65rem; padding: 0.12rem 0.5rem; border-radius: 12px; font-weight: 800; background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd;">FULL
+                                        VALUATION</span>
+                                </div>
+                                <div id="costModeSubtext" style="font-size: 0.73rem; color: var(--slate-500);">
+                                    Includes Land Quality Area Valuation, Government Permits (5%), and Contingency (7%).
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span id="costModeActiveLabel"
+                                style="font-size: 0.76rem; font-weight: 700; color: var(--slate-700);">
+                                Remove Land Quality &amp; Area Cost:
+                            </span>
+                            <label class="cost-switch-lbl"
+                                title="Click to toggle: remove Area Cost and calculate only Materials + Labor">
+                                <input type="checkbox" id="costModeToggle"
+                                    onchange="toggleAreaCostExclusion(this.checked)">
+                                <span class="cost-switch-visual"></span>
+                            </label>
+                        </div>
+                    </div>
+
                     <!-- Adjust Parameters for Photo Analyzed Custom House -->
                     <div id="customPhotoControls"
                         style="display: none; background: linear-gradient(135deg, rgba(14,165,233,0.05), rgba(124,58,237,0.03)); border: 1.5px solid var(--sky-200); border-radius: var(--radius-md); padding: 1.15rem; margin-bottom: 1.5rem;">
@@ -497,6 +612,132 @@
                                 style="font-size: 0.72rem; color: #0284c7; font-weight: 700; background: rgba(255,255,255,0.85); padding: 0.25rem 0.6rem; border-radius: 4px; border: 1px solid #bae6fd;">
                                 <i class="fa-solid fa-arrows-rotate"></i> Live Synchronized
                             </span>
+                        </div>
+
+                        <!-- Location Assessment & Structural Protection Analysis Card -->
+                        <div id="paLocationHazardCard"
+                            style="background: white; border: 1.5px solid var(--sky-200); border-radius: 8px; padding: 1rem 1.15rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(14,165,233,0.06);">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+                                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                                    <span
+                                        style="background: linear-gradient(135deg, #0ea5e9, #7c3aed); color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14,165,233,0.3);">
+                                        <i class="fa-solid fa-shield-halved"></i>
+                                    </span>
+                                    <div>
+                                        <div
+                                            style="font-size: 0.88rem; font-weight: 800; color: var(--slate-800); font-family: var(--font-heading);">
+                                            Location Assessment &amp; Blueprint Protection Audit
+                                        </div>
+                                        <div id="paSiteLocationLabel"
+                                            style="font-size: 0.73rem; color: var(--slate-500); font-weight: 600;">
+                                            San Vicente, Panabo City, Davao del Norte
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="paSafetyScoreHeaderBox" style="text-align: right; display: flex; align-items: center; gap: 0.6rem;">
+                                    <div>
+                                        <div
+                                            style="font-size: 0.65rem; color: var(--slate-500); font-weight: 700; text-transform: uppercase;">
+                                            Location Safety Rating</div>
+                                        <div id="paSafetyScoreVal"
+                                            style="font-size: 1.15rem; font-weight: 900; color: #0284c7; font-family: var(--font-heading);">
+                                            85% Safety</div>
+                                    </div>
+                                    <div id="paSafetyBadgeIcon"
+                                        style="background: #e0f2fe; color: #0284c7; border: 1.5px solid #7dd3fc; border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 900;">
+                                        <i class="fa-solid fa-shield"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Safety Progress Bar -->
+                            <div id="paSafetyProgressBarContainer"
+                                style="background: #e2e8f0; height: 7px; border-radius: 4px; overflow: hidden; margin-bottom: 0.85rem;">
+                                <div id="paSafetyProgressBar"
+                                    style="height: 100%; width: 92%; background: linear-gradient(90deg, #0ea5e9, #10b981); transition: width 0.4s ease;">
+                                </div>
+                            </div>
+
+                            <!-- Hazard Indicators Row -->
+                            <div
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.6rem; margin-bottom: 0.85rem;">
+                                <div
+                                    style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.45rem 0.6rem;">
+                                    <div style="font-size: 0.65rem; color: #64748b; font-weight: 600;"><i
+                                            class="fa-solid fa-water" style="color:#0ea5e9;"></i> Flood Risk</div>
+                                    <div id="paFloodLevel"
+                                        style="font-size: 0.82rem; font-weight: 800; color: #059669;">
+                                        Low Risk</div>
+                                </div>
+                                <div
+                                    style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.45rem 0.6rem;">
+                                    <div style="font-size: 0.65rem; color: #64748b; font-weight: 600;"><i
+                                            class="fa-solid fa-house-crack" style="color:#f97316;"></i> Earthquake Risk
+                                    </div>
+                                    <div id="paSeismicLevel"
+                                        style="font-size: 0.82rem; font-weight: 800; color: #ea580c;">Moderate Risk
+                                    </div>
+                                </div>
+                                <div
+                                    style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.45rem 0.6rem;">
+                                    <div style="font-size: 0.65rem; color: #64748b; font-weight: 600;"><i
+                                            class="fa-solid fa-mountain" style="color:#10b981;"></i> Soil Stability
+                                    </div>
+                                    <div id="paSoilLevel" style="font-size: 0.82rem; font-weight: 800; color: #059669;">
+                                        Good (Stable)</div>
+                                </div>
+                                <div
+                                    style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.45rem 0.6rem;">
+                                    <div style="font-size: 0.65rem; color: #64748b; font-weight: 600;"><i
+                                            class="fa-solid fa-triangle-exclamation" style="color:#64748b;"></i> Site
+                                        Status
+                                    </div>
+                                    <div id="paOverallStatus"
+                                        style="font-size: 0.82rem; font-weight: 800; color: #c2410c;">Moderate Risk
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- How Blueprint Protects Occupants in this Location -->
+                            <div
+                                style="background: #f0f9ff; border-left: 3.5px solid #0284c7; border-radius: 0 6px 6px 0; padding: 0.7rem 0.9rem; margin-bottom: 0.75rem;">
+                                <div
+                                    style="font-size: 0.75rem; font-weight: 800; color: #0369a1; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.4rem;">
+                                    <i class="fa-solid fa-shield-virus"></i> How This House &amp; Blueprint Protects You
+                                    At This Location:
+                                </div>
+                                <div id="paProtectionExplanation"
+                                    style="font-size: 0.75rem; color: #334155; line-height: 1.5;">
+                                    <!-- Dynamic explanation populated by system.js -->
+                                </div>
+                            </div>
+
+                            <!-- AI Recommendation Advice Bullet List -->
+                            <div>
+                                <div
+                                    style="font-size: 0.72rem; font-weight: 800; color: var(--slate-700); margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.35rem;">
+                                    <i class="fa-solid fa-list-check" style="color: #0ea5e9;"></i> Location AI
+                                    Engineering Recommendations Applied:
+                                </div>
+                                <ul id="paAdviceList"
+                                    style="margin: 0; padding-left: 1.25rem; font-size: 0.73rem; color: #475569; line-height: 1.5;">
+                                    <!-- Dynamic bullets populated by system.js -->
+                                </ul>
+                            </div>
+
+                            <!-- Safety Tier Summary & Details Button (User Diagram Alignment) -->
+                            <div style="margin-top: 0.75rem; padding-top: 0.65rem; border-top: 1px dashed #cbd5e1; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.6rem;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; flex: 1; min-width: 250px;">
+                                    <span id="paSafetyTierBadge" style="font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.6rem; border-radius: 9999px; background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; white-space: nowrap;">75%–99% High Safety</span>
+                                    <span id="paSafetyBriefText" style="font-size: 0.72rem; color: #475569; line-height: 1.4;">Based on Floor Area and Material Quality.</span>
+                                </div>
+                                <button type="button" id="btnExplainSafetyDetails" onclick="openSafetyRatingExplanationModal()"
+                                    style="background: #ffffff; color: #0284c7; border: 1.5px solid #0284c7; padding: 0.4rem 0.85rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); transition: all 0.15s ease;">
+                                    <i class="fa-solid fa-circle-question" style="font-size: 0.85rem;"></i>
+                                    <span>Why is it <span id="btnExplainSafetyScoreSpan">85%</span>? View Details</span>
+                                </button>
+                            </div>
                         </div>
                         <div
                             style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
@@ -525,7 +766,7 @@
                                         style="font-size: 0.72rem; color: var(--slate-500);">m²</span>
                                 </div>
                             </div>
-                            <div>
+                            <div id="paQualityGroup">
                                 <label
                                     style="font-size: 0.72rem; font-weight: 700; color: var(--slate-600); display: block; margin-bottom: 0.35rem;">Land
                                     Quality</label>
@@ -966,6 +1207,126 @@
             <button id="btnCloseLightbox" class="lightbox-close-btn"
                 style="position: absolute; top: -1.25rem; right: -1.25rem; background: #ef4444; color: white; border: 2px solid white; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 10;"><i
                     class="fa-solid fa-xmark"></i></button>
+        </div>
+    </div>
+
+    <!-- Safety Rating & Calculation Explanation Modal -->
+    <div id="safetyExplanationModal" class="lightbox-modal"
+        style="display: none; position: fixed; z-index: 2100; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.78); backdrop-filter: blur(6px); justify-content: center; align-items: center; opacity: 0; transition: opacity 0.25s ease;">
+        <div style="position: relative; width: 92vw; max-width: 820px; max-height: 90vh; background: #ffffff; border-radius: 12px; box-shadow: 0 25px 60px rgba(0,0,0,0.35); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #cbd5e1;">
+            
+            <!-- Modal Header -->
+            <div style="padding: 1rem 1.35rem; background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 0.65rem;">
+                    <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; font-family: var(--font-heading); color: #ffffff;">Safety Rating &amp; Structural Engineering Audit</h3>
+                        <p style="margin: 0; font-size: 0.72rem; color: #e0f2fe;">Mathematical breakdown based on Floor Area, Material Quality, and Geological Site Hazards.</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeSafetyRatingExplanationModal()" style="background: rgba(255,255,255,0.18); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s ease;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body (Scrollable) -->
+            <div style="padding: 1.25rem 1.4rem; overflow-y: auto; flex: 1; font-size: 0.8rem; color: #334155; line-height: 1.5;">
+                
+                <!-- Active House Current Calculation Summary -->
+                <div id="modalActiveHouseScoreCard" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 1rem 1.15rem; margin-bottom: 1.25rem;">
+                    <!-- Populated dynamically by system.js -->
+                </div>
+
+                <!-- Point-by-Point Calculation Breakdown -->
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 0.86rem; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 0.4rem;">
+                        <i class="fa-solid fa-calculator" style="color: #0284c7;"></i> Point-by-Point Score Calculation
+                    </h4>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden;">
+                        <thead>
+                            <tr style="background: #f1f5f9; text-align: left; color: #475569; border-bottom: 1px solid #cbd5e1;">
+                                <th style="padding: 0.5rem 0.75rem; width: 32%;">Structural Factor</th>
+                                <th style="padding: 0.5rem 0.75rem; width: 48%;">House &amp; Location Input</th>
+                                <th style="padding: 0.5rem 0.75rem; width: 20%; text-align: right;">Points Impact</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modalCalcTableBody">
+                            <!-- Populated dynamically by system.js -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- The 4 Official Safety Tiers Reference Guide -->
+                <div>
+                    <h4 style="margin: 0 0 0.65rem 0; font-size: 0.86rem; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 0.4rem;">
+                        <i class="fa-solid fa-layer-group" style="color: #0284c7;"></i> Safety Rating Tiers &amp; Criteria Guide
+                    </h4>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <!-- Tier 1: 0% - 49% -->
+                        <div style="border: 1px solid #fecaca; background: #fff5f5; border-radius: 8px; padding: 0.8rem 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                                <span style="font-weight: 800; color: #b91c1c; font-size: 0.82rem; display: flex; align-items: center; gap: 0.35rem;">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> 0% – 49% : Low / Critical Safety
+                                </span>
+                                <span style="font-size: 0.68rem; font-weight: 700; background: #fee2e2; color: #991b1b; padding: 0.15rem 0.5rem; border-radius: 4px;">High Vulnerability</span>
+                            </div>
+                            <div style="font-size: 0.74rem; color: #7f1d1d; line-height: 1.45;">
+                                <strong>Why it is Low:</strong> The structure uses light, unreinforced materials (such as Agricultural ₱1,500/m² or unbraced timber) or has large unbraced spans (>120 m² or 3 storeys) in moderate/high hazard zones. Without reinforced concrete columns and foundation anchoring, it has severe vulnerability to earthquake shearing, storm winds, or water intrusion.
+                            </div>
+                        </div>
+
+                        <!-- Tier 2: 50% - 74% -->
+                        <div style="border: 1px solid #fed7aa; background: #fffaf5; border-radius: 8px; padding: 0.8rem 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                                <span style="font-weight: 800; color: #c2410c; font-size: 0.82rem; display: flex; align-items: center; gap: 0.35rem;">
+                                    <i class="fa-solid fa-circle-exclamation"></i> 50% – 74% : Mid / Moderate Safety
+                                </span>
+                                <span style="font-size: 0.68rem; font-weight: 700; background: #ffedd5; color: #9a3412; padding: 0.15rem 0.5rem; border-radius: 4px;">Standard Domestic</span>
+                            </div>
+                            <div style="font-size: 0.74rem; color: #7c2d12; line-height: 1.45;">
+                                <strong>Why it is Mid:</strong> Built with conventional residential materials (Residential ₱8,000/m² or Industrial ₱6,500/m²) suitable for everyday normal weather. However, regional hazards (such as active fault lines or seasonal monsoons) combined with medium-to-large floor areas put elevated strain on partition walls. Adequate for normal conditions, but requires seismic grade beams or elevated slabs for severe natural disasters.
+                            </div>
+                        </div>
+
+                        <!-- Tier 3: 75% - 99% -->
+                        <div style="border: 1px solid #bae6fd; background: #f0f9ff; border-radius: 8px; padding: 0.8rem 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                                <span style="font-weight: 800; color: #0369a1; font-size: 0.82rem; display: flex; align-items: center; gap: 0.35rem;">
+                                    <i class="fa-solid fa-shield-check"></i> 75% – 99% : High / Robust Safety
+                                </span>
+                                <span style="font-size: 0.68rem; font-weight: 700; background: #e0f2fe; color: #075985; padding: 0.15rem 0.5rem; border-radius: 4px;">Engineered Protection</span>
+                            </div>
+                            <div style="font-size: 0.74rem; color: #0c4a6e; line-height: 1.45;">
+                                <strong>Why it is High:</strong> Built with certified reinforced concrete masonry (Residential ₱8,000/m² or Commercial ₱11,000/m²), optimal compact-to-balanced footprint (≤80 m²), and proactive blueprint adaptations (continuous strip footings, elevated floor elevation, rebar tie spacing). It effectively neutralizes local geological and meteorological hazards.
+                            </div>
+                        </div>
+
+                        <!-- Tier 4: 100% -->
+                        <div style="border: 1.5px solid #86efac; background: #f0fdf4; border-radius: 8px; padding: 0.8rem 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                                <span style="font-weight: 800; color: #15803d; font-size: 0.82rem; display: flex; align-items: center; gap: 0.35rem;">
+                                    <i class="fa-solid fa-award"></i> 100% : Maximum Certified Safety (Special Case)
+                                </span>
+                                <span style="font-size: 0.68rem; font-weight: 700; background: #dcfce7; color: #166534; padding: 0.15rem 0.5rem; border-radius: 4px;">Flawless Resilience</span>
+                            </div>
+                            <div style="font-size: 0.74rem; color: #14532d; line-height: 1.45;">
+                                <strong>How 100% is Earned:</strong> This rating is awarded only when 4 critical engineering pillars are flawlessly met simultaneously: (1) Low-hazard geological site zoning, (2) Heavy Commercial-grade reinforced concrete (₱11,000/m²) with high-ductility rebar framing, (3) Compact rigid single-storey footprint (≤55 m²) preventing lateral drift, and (4) Aerodynamic 4-pitch hip roof profile deflecting peak typhoon wind pressures from all directions.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div style="padding: 0.75rem 1.4rem; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end;">
+                <button type="button" onclick="closeSafetyRatingExplanationModal()" style="background: #0284c7; color: white; border: none; padding: 0.5rem 1.3rem; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: background 0.15s ease;">
+                    Close Details
+                </button>
+            </div>
         </div>
     </div>
 
