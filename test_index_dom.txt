@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Residential Housing Planning and Estimation System - Wizard Planner</title>
+    <meta name="description" content="Automate structural planning, blueprint scanning, GIS hazard analysis, and dynamic cost forecasting for small residential buildings.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Mark that user has visited the Dashboard -->
+    <script>
+        sessionStorage.setItem('visitedDashboard', '1');
+    </script>
+</head>
+
+<body>
+    <!-- Unified Top Navigation Header -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fa-solid fa-house-chimney-crack brand-icon animate-pulse"></i>
+                <span>AI-Powered Residential Housing Planning and Estimation System</span>
+            </div>
+            <div class="nav-links">
+                <a href="system.html" class="nav-link active"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="index.html" class="nav-link"><i class="fa-solid fa-drafting-compass"></i> Custom Build</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Premium Hero Header -->
+    <header class="app-header" style="padding: 2.2rem 1.5rem 3rem 1.5rem;">
+        <div class="header-overlay"></div>
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-brain"></i>
+                    <div class="pulse-ring"></div>
+                </div>
+                <div class="logo-text">
+                    <h1>AI-Powered Residential Housing Planning and Estimation System</h1>
+                    <span style="font-size: 0.75rem; letter-spacing: 0.5px;">AI-Powered Residential House Recommendation
+                        and Construction Cost Estimation System</span>
+                </div>
+            </div>
+            <p class="tagline">An automated residential planning system. Audit environmental hazards at your building
+                location in the Philippines, select recommended concrete or timber models, and dynamically compute
+                project proposals.</p>
+        </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <main class="main-container" style="margin-top: -1.25rem;">
+
+        <!-- Wizard Navigation Progress Indicator -->
+        <div class="wizard-stepper">
+            <div class="step-indicator active" id="stepIndicator1">
+                <span class="step-number">1</span>
+                <span>Location &amp; Recommended Designs</span>
+            </div>
+            <div class="step-divider">
+                <div id="wizardProgressBar" class="step-progress-fill"></div>
+            </div>
+            <div class="step-indicator" id="stepIndicator2">
+                <span class="step-number" id="stepBadge2">2</span>
+                <span>Estimation &amp; Forecasts</span>
+            </div>
+        </div>
+
+        <!-- STEP 1 CONTAINER (Location Search & Recommended Houses) -->
+        <div id="step1Container" style="display: block;">
+            <div class="workspace-grid">
+                <!-- Step 1 Main Panel -->
+                <section class="card glass-card feature-card" style="border-left-color: var(--sky-500); padding: 2rem;">
+                    <div class="card-header" style="margin-bottom: 1.25rem;">
+                        <h2><i class="fa-solid fa-map-location-dot"></i> Location Assessment</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- Location Selection Fields -->
+                        <div class="form-row">
+                            <div class="form-group" style="margin: 0;">
+                                <label for="provinceSelect" class="input-label">Province</label>
+                                <div class="select-container">
+                                    <select id="provinceSelect" class="premium-select" style="padding: 0.6rem 2rem 0.6rem 0.8rem; font-size: 0.85rem;">
+                                        <option value="davao_norte">Davao del Norte</option>
+                                        <option value="davao_sur">Davao del Sur</option>
+                                        <option value="leyte">Leyte</option>
+                                    </select>
+                                    <i class="fa-solid fa-chevron-down select-arrow" style="font-size: 0.75rem;"></i>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin: 0;">
+                                <label for="citySelect" class="input-label">City/Municipality</label>
+                                <div class="select-container">
+                                    <select id="citySelect" class="premium-select" style="padding: 0.6rem 2rem 0.6rem 0.8rem; font-size: 0.85rem;"><option value="panabo">Panabo City</option><option value="tagum">Tagum City</option><option value="samal">Samal City (IGACOS)</option><option value="carmen">Carmen</option><option value="sto_tomas">Sto. Tomas</option></select>
+                                    <i class="fa-solid fa-chevron-down select-arrow" style="font-size: 0.75rem;"></i>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin: 0;">
+                                <label for="barangaySelect" class="input-label">Barangay</label>
+                                <div class="select-container">
+                                    <select id="barangaySelect" class="premium-select" style="padding: 0.6rem 2rem 0.6rem 0.8rem; font-size: 0.85rem;"><option value="san_vicente">San Vicente</option><option value="gredu">Gredu</option><option value="new_pandan">New Pandan</option><option value="quezon">Quezon</option></select>
+                                    <i class="fa-solid fa-chevron-down select-arrow" style="font-size: 0.75rem;"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 1.25rem;">
+                            <label for="lotDetails" class="input-label">Specific Lot Info / Barangay Zone
+                                (Optional)</label>
+                            <input type="text" id="lotDetails" value="" placeholder="e.g. Zone 3, Lot 14-B" style="width: 100%; padding: 0.6rem 0.8rem; border: 2px solid var(--sky-200); border-radius: var(--radius-sm); outline: none; font-family: var(--font-body); font-weight: 600; color: var(--slate-800); background: white; font-size: 0.85rem;">
+                        </div>
+
+                        <div style="text-align: right; margin-bottom: 1.5rem;">
+                            <button type="button" id="btnAuditLocation" class="export-btn" style="padding: 0.6rem 1.25rem; font-size: 0.85rem; border-radius: var(--radius-sm);"><i class="fa-solid fa-shield-halved"></i> Audit Location Risks</button>
+                        </div>
+
+                        <!-- Dynamic AI Location Assessment Report Output -->
+                        <div class="recommendations-box sky-advisory" id="gisSafetyOutput" style="margin-top: 0; margin-bottom: 2rem; border-left-width: 4px; display: flex; gap: 0.8rem; padding: 1rem;">
+                            <i class="fa-solid fa-earth-philippines text-sky rec-icon" style="font-size: 1.8rem;"></i>
+                            <div style="flex-grow: 1;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                                    <strong style="font-size: 0.95rem;" id="recommendationTitle">Location Status: Moderate Risk</strong>
+                                    <span class="badge sky-badge" id="zoningThreatBadge" style="background: var(--sky-100); color: var(--sky-700); font-size: 0.65rem; border: 1px solid var(--sky-200);">AUDIT
+                                        COMPLETED</span>
+                                </div>
+                                <!-- Location Hazard Threat Index Meter -->
+                                <div style="margin-top: 0.5rem; margin-bottom: 0.4rem;">
+                                    <div class="hazard-meter-bg" style="background: var(--slate-200); height: 8px; border-radius: 4px; overflow: hidden; position: relative;">
+                                        <div id="hazardMeterFill" style="height: 100%; width: 72%; background: var(--orange-500); transition: width 0.4s ease, background-color 0.4s ease;">
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--slate-500); margin-top: 0.25rem; font-weight: 700; font-family: var(--font-heading);">
+                                        <span>Low Risk (Safe)</span>
+                                        <span>Moderate Risk</span>
+                                        <span>High Risk (Danger)</span>
+                                    </div>
+                                </div>
+                                <div class="risk-metrics-row" style="display: flex; gap: 1.5rem; margin-top: 0.5rem; border-top: 1px solid rgba(14, 165, 233, 0.08); border-bottom: 1px solid rgba(14, 165, 233, 0.08); padding: 0.4rem 0;">
+                                    <span style="font-size: 0.75rem; font-weight: 700; color: var(--slate-700);">Flood
+                                        Risk: <strong style="color: var(--green-600);" id="lblFloodRisk">Low</strong></span>
+                                    <span style="font-size: 0.75rem; font-weight: 700; color: var(--slate-700);">Earthquake
+                                        Risk: <strong style="color: var(--orange-500);" id="lblSeismicRisk">Moderate</strong></span>
+                                    <span style="font-size: 0.75rem; font-weight: 700; color: var(--slate-700);">Soil
+                                        Stability: <strong style="color: var(--green-600);" id="lblSoilRisk">Good</strong></span>
+                                </div>
+                                <div style="font-size: 0.8rem; line-height: 1.5; margin-top: 0.5rem; color: var(--slate-600);">
+                                    <strong>AI Recommendation Advice:</strong>
+                                    <ul style="margin-left: 1.2rem; margin-top: 0.2rem; display: flex; flex-direction: column; gap: 0.15rem;" id="lblRiskAdvice"><li>✓ Use reinforced concrete foundation</li><li>✓ Apply seismic reinforcement</li><li>✓ Use elevated floor level</li></ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- House Cards Selector Grid -->
+                        <div class="card-header" style="margin-bottom: 1rem; border-top: 1px solid var(--sky-100); padding-top: 1.25rem;">
+                            <h2><i class="fa-solid fa-house-chimney-window"></i> Recommended AI Designs</h2>
+                        </div>
+                        <p class="section-desc" style="margin-bottom: 1rem;">Based on your environmental audit, the AI
+                            has generated suitable house presets. Prices emphasize safety compatibility ratings
+                            (Mindanao calibration).</p>
+
+                        <!-- Valuation Scope Switch for Recommended Houses -->
+                        <div id="step1CostModeSwitchBar" class="cost-mode-switch-card" style="margin-bottom: 1.25rem; padding: 0.75rem 1rem;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <span style="background: var(--sky-500); color: white; width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14,165,233,0.3);">
+                                    <i class="fa-solid fa-calculator"></i>
+                                </span>
+                                <div>
+                                    <div style="font-size: 0.84rem; font-weight: 800; color: var(--slate-800); font-family: var(--font-heading); display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
+                                        <span>Valuation Scope</span>
+                                        <span id="step1CostModeBadge" style="font-size: 0.62rem; padding: 0.12rem 0.5rem; border-radius: 12px; font-weight: 800; background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd;">FULL
+                                            VALUATION</span>
+                                    </div>
+                                    <div id="step1CostModeSubtext" style="font-size: 0.72rem; color: var(--slate-500);">
+                                        Includes Land Quality Area Cost + Government Permits (5%) + Contingency (7%).
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; align-items: center; gap: 0.65rem;">
+                                <span style="font-size: 0.74rem; font-weight: 700; color: var(--slate-700);">
+                                    Remove Area Cost:
+                                </span>
+                                <label class="cost-switch-lbl" title="Click to toggle: remove Area Cost and calculate only Materials + Labor">
+                                    <input type="checkbox" id="step1CostModeToggle" onchange="toggleAreaCostExclusion(this.checked)">
+                                    <span class="cost-switch-visual"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="ai-house-selector-grid" id="houseSelectionGrid"><div class="ai-house-card" style="cursor: pointer; border: 2px solid var(--sky-200); border-radius: var(--radius-md); overflow: hidden; background: white; position: relative; transition: transform 0.18s, box-shadow 0.18s;">
+                <div class="house-img-container" style="position: relative; height: 120px; overflow: hidden; background: #0b1329;">
+                    <img src="Img/House_davao_del_sur_1.jpg" alt="Davao del Sur Tropical Modern Villa" style="width: 100%; height: 100%; object-fit: cover;">
+                    <span style="position: absolute; top: 0.5rem; left: 0.5rem; background: #0284c7; color: white; padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; font-family: var(--font-heading);"><i class="fa-solid fa-location-dot"></i> Davao del Sur</span>
+                    <span style="position: absolute; top: 0.5rem; right: 0.5rem; background: var(--sky-500); color: white; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; font-family: var(--font-heading);"><i class="fa-solid fa-shield"></i> 96% Safety</span>
+                </div>
+                <div class="house-details" style="padding: 0.75rem 0.85rem;">
+                    <h4 class="house-price-label" style="font-family: var(--font-heading); font-size: 1.1rem; color: var(--sky-700); font-weight: 800; line-height: 1; text-align: center; margin-bottom: 0.3rem;">₱1,362,153</h4>
+                    <span style="font-size: 0.68rem; color: var(--slate-500); font-weight: 600; display: block; text-align: center; margin-bottom: 0.55rem;">68 sqm &nbsp;|&nbsp; 3 Beds &nbsp;|&nbsp; 2 Baths</span>
+
+                    <!-- Area Cost Breakdown -->
+                    
+                    <div style="background: #ede9fe; border-radius: 8px; padding: 0.45rem 0.6rem; border: 1px solid #7c3aed22;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                            <span style="font-size: 0.6rem; font-weight: 800; color: #7c3aed; font-family: var(--font-heading); letter-spacing: 0.5px;">
+                                <i class="fa-solid fa-ruler-combined" style="margin-right:2px;"></i> AREA COST
+                            </span>
+                            <span style="background: #7c3aed; color: white; font-size: 0.55rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: 20px; font-family: var(--font-heading);">COMMERCIAL(CR)</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <div>
+                                <div style="font-size: 0.6rem; color: #64748b;">68 m² × ₱11,000/m²</div>
+                            </div>
+                            <div style="font-size: 0.88rem; font-weight: 800; color: #7c3aed; font-family: var(--font-heading);">₱748,000</div>
+                        </div>
+                    </div>
+                    
+
+                    <div style="display: flex; gap: 0.3rem; margin-top: 0.4rem;">
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">MAT. COST</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">₱437,850</div>
+                        </div>
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">LABOR</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">₱110,500</div>
+                        </div>
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">DURATION</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">17wk</div>
+                        </div>
+                    </div>
+                </div>
+            </div><div class="ai-house-card" style="cursor: pointer; border: 2px solid var(--sky-200); border-radius: var(--radius-md); overflow: hidden; background: white; position: relative; transition: transform 0.18s, box-shadow 0.18s;">
+                <div class="house-img-container" style="position: relative; height: 120px; overflow: hidden; background: #0b1329;">
+                    <img src="Img/house_flood_protector.jpg" alt="Flood Protector Concrete House" style="width: 100%; height: 100%; object-fit: cover;">
+                    <span style="position: absolute; top: 0.5rem; left: 0.5rem; background: #059669; color: white; padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; font-family: var(--font-heading);"><i class="fa-solid fa-water"></i> Flood-Shield</span>
+                    <span style="position: absolute; top: 0.5rem; right: 0.5rem; background: var(--sky-500); color: white; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; font-family: var(--font-heading);"><i class="fa-solid fa-shield"></i> 99% Safety</span>
+                </div>
+                <div class="house-details" style="padding: 0.75rem 0.85rem;">
+                    <h4 class="house-price-label" style="font-family: var(--font-heading); font-size: 1.1rem; color: var(--sky-700); font-weight: 800; line-height: 1; text-align: center; margin-bottom: 0.3rem;">₱1,307,089</h4>
+                    <span style="font-size: 0.68rem; color: var(--slate-500); font-weight: 600; display: block; text-align: center; margin-bottom: 0.55rem;">65 sqm &nbsp;|&nbsp; 3 Beds &nbsp;|&nbsp; 2 Baths</span>
+
+                    <!-- Area Cost Breakdown -->
+                    
+                    <div style="background: #ede9fe; border-radius: 8px; padding: 0.45rem 0.6rem; border: 1px solid #7c3aed22;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                            <span style="font-size: 0.6rem; font-weight: 800; color: #7c3aed; font-family: var(--font-heading); letter-spacing: 0.5px;">
+                                <i class="fa-solid fa-ruler-combined" style="margin-right:2px;"></i> AREA COST
+                            </span>
+                            <span style="background: #7c3aed; color: white; font-size: 0.55rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: 20px; font-family: var(--font-heading);">COMMERCIAL(CR)</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <div>
+                                <div style="font-size: 0.6rem; color: #64748b;">65 m² × ₱11,000/m²</div>
+                            </div>
+                            <div style="font-size: 0.88rem; font-weight: 800; color: #7c3aed; font-family: var(--font-heading);">₱715,000</div>
+                        </div>
+                    </div>
+                    
+
+                    <div style="display: flex; gap: 0.3rem; margin-top: 0.4rem;">
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">MAT. COST</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">₱418,150</div>
+                        </div>
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">LABOR</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">₱110,500</div>
+                        </div>
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">DURATION</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">17wk</div>
+                        </div>
+                    </div>
+                </div>
+            </div><div class="ai-house-card" style="cursor: pointer; border: 2px solid var(--sky-200); border-radius: var(--radius-md); overflow: hidden; background: white; position: relative; transition: transform 0.18s, box-shadow 0.18s;">
+                <div class="house-img-container" style="position: relative; height: 120px; overflow: hidden; background: #0b1329;">
+                    <img src="Img/house_elevated.png" alt="Elevated Flood-Resistant House" style="width: 100%; height: 100%; object-fit: cover;">
+                    
+                    <span style="position: absolute; top: 0.5rem; right: 0.5rem; background: var(--sky-500); color: white; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; font-family: var(--font-heading);"><i class="fa-solid fa-shield"></i> 98% Safety</span>
+                </div>
+                <div class="house-details" style="padding: 0.75rem 0.85rem;">
+                    <h4 class="house-price-label" style="font-family: var(--font-heading); font-size: 1.1rem; color: var(--sky-700); font-weight: 800; line-height: 1; text-align: center; margin-bottom: 0.3rem;">₱1,196,201</h4>
+                    <span style="font-size: 0.68rem; color: var(--slate-500); font-weight: 600; display: block; text-align: center; margin-bottom: 0.55rem;">60 sqm &nbsp;|&nbsp; 2 Beds &nbsp;|&nbsp; 1 Baths</span>
+
+                    <!-- Area Cost Breakdown -->
+                    
+                    <div style="background: #ede9fe; border-radius: 8px; padding: 0.45rem 0.6rem; border: 1px solid #7c3aed22;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                            <span style="font-size: 0.6rem; font-weight: 800; color: #7c3aed; font-family: var(--font-heading); letter-spacing: 0.5px;">
+                                <i class="fa-solid fa-ruler-combined" style="margin-right:2px;"></i> AREA COST
+                            </span>
+                            <span style="background: #7c3aed; color: white; font-size: 0.55rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: 20px; font-family: var(--font-heading);">COMMERCIAL(CR)</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <div>
+                                <div style="font-size: 0.6rem; color: #64748b;">60 m² × ₱11,000/m²</div>
+                            </div>
+                            <div style="font-size: 0.88rem; font-weight: 800; color: #7c3aed; font-family: var(--font-heading);">₱660,000</div>
+                        </div>
+                    </div>
+                    
+
+                    <div style="display: flex; gap: 0.3rem; margin-top: 0.4rem;">
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">MAT. COST</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">₱374,750</div>
+                        </div>
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">LABOR</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">₱104,000</div>
+                        </div>
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">DURATION</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">16wk</div>
+                        </div>
+                    </div>
+                </div>
+            </div><div class="ai-house-card" style="cursor: pointer; border: 2px solid var(--sky-200); border-radius: var(--radius-md); overflow: hidden; background: white; position: relative; transition: transform 0.18s, box-shadow 0.18s;">
+                <div class="house-img-container" style="position: relative; height: 120px; overflow: hidden; background: #0b1329;">
+                    <img src="Img/House_davao_del_sur_3.jpg" alt="Davao del Sur Contemporary Family Residence" style="width: 100%; height: 100%; object-fit: cover;">
+                    <span style="position: absolute; top: 0.5rem; left: 0.5rem; background: #0284c7; color: white; padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; font-family: var(--font-heading);"><i class="fa-solid fa-location-dot"></i> Davao del Sur</span>
+                    <span style="position: absolute; top: 0.5rem; right: 0.5rem; background: var(--sky-500); color: white; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; font-family: var(--font-heading);"><i class="fa-solid fa-shield"></i> 95% Safety</span>
+                </div>
+                <div class="house-details" style="padding: 0.75rem 0.85rem;">
+                    <h4 class="house-price-label" style="font-family: var(--font-heading); font-size: 1.1rem; color: var(--sky-700); font-weight: 800; line-height: 1; text-align: center; margin-bottom: 0.3rem;">₱1,572,272</h4>
+                    <span style="font-size: 0.68rem; color: var(--slate-500); font-weight: 600; display: block; text-align: center; margin-bottom: 0.55rem;">80 sqm &nbsp;|&nbsp; 3 Beds &nbsp;|&nbsp; 2 Baths</span>
+
+                    <!-- Area Cost Breakdown -->
+                    
+                    <div style="background: #ede9fe; border-radius: 8px; padding: 0.45rem 0.6rem; border: 1px solid #7c3aed22;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                            <span style="font-size: 0.6rem; font-weight: 800; color: #7c3aed; font-family: var(--font-heading); letter-spacing: 0.5px;">
+                                <i class="fa-solid fa-ruler-combined" style="margin-right:2px;"></i> AREA COST
+                            </span>
+                            <span style="background: #7c3aed; color: white; font-size: 0.55rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: 20px; font-family: var(--font-heading);">COMMERCIAL(CR)</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <div>
+                                <div style="font-size: 0.6rem; color: #64748b;">80 m² × ₱11,000/m²</div>
+                            </div>
+                            <div style="font-size: 0.88rem; font-weight: 800; color: #7c3aed; font-family: var(--font-heading);">₱880,000</div>
+                        </div>
+                    </div>
+                    
+
+                    <div style="display: flex; gap: 0.3rem; margin-top: 0.4rem;">
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">MAT. COST</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">₱494,600</div>
+                        </div>
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">LABOR</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">₱123,500</div>
+                        </div>
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">DURATION</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">19wk</div>
+                        </div>
+                    </div>
+                </div>
+            </div><div class="ai-house-card" style="cursor: pointer; border: 2px solid var(--sky-200); border-radius: var(--radius-md); overflow: hidden; background: white; position: relative; transition: transform 0.18s, box-shadow 0.18s;">
+                <div class="house-img-container" style="position: relative; height: 120px; overflow: hidden; background: #0b1329;">
+                    <img src="Img/House_davao_del_sur_4.jpg" alt="Davao del Sur Compact Suburb Home" style="width: 100%; height: 100%; object-fit: cover;">
+                    <span style="position: absolute; top: 0.5rem; left: 0.5rem; background: #0284c7; color: white; padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; font-family: var(--font-heading);"><i class="fa-solid fa-location-dot"></i> Davao del Sur</span>
+                    <span style="position: absolute; top: 0.5rem; right: 0.5rem; background: var(--sky-500); color: white; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; font-family: var(--font-heading);"><i class="fa-solid fa-shield"></i> 94% Safety</span>
+                </div>
+                <div class="house-details" style="padding: 0.75rem 0.85rem;">
+                    <h4 class="house-price-label" style="font-family: var(--font-heading); font-size: 1.1rem; color: var(--sky-700); font-weight: 800; line-height: 1; text-align: center; margin-bottom: 0.3rem;">₱865,600</h4>
+                    <span style="font-size: 0.68rem; color: var(--slate-500); font-weight: 600; display: block; text-align: center; margin-bottom: 0.55rem;">55 sqm &nbsp;|&nbsp; 2 Beds &nbsp;|&nbsp; 1 Baths</span>
+
+                    <!-- Area Cost Breakdown -->
+                    
+                    <div style="background: #e0f2fe; border-radius: 8px; padding: 0.45rem 0.6rem; border: 1px solid #0284c722;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                            <span style="font-size: 0.6rem; font-weight: 800; color: #0284c7; font-family: var(--font-heading); letter-spacing: 0.5px;">
+                                <i class="fa-solid fa-ruler-combined" style="margin-right:2px;"></i> AREA COST
+                            </span>
+                            <span style="background: #0284c7; color: white; font-size: 0.55rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: 20px; font-family: var(--font-heading);">RESIDENTIAL(RR)</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <div>
+                                <div style="font-size: 0.6rem; color: #64748b;">55 m² × ₱8,000/m²</div>
+                            </div>
+                            <div style="font-size: 0.88rem; font-weight: 800; color: #0284c7; font-family: var(--font-heading);">₱440,000</div>
+                        </div>
+                    </div>
+                    
+
+                    <div style="display: flex; gap: 0.3rem; margin-top: 0.4rem;">
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">MAT. COST</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">₱295,500</div>
+                        </div>
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">LABOR</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">₱84,500</div>
+                        </div>
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">DURATION</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">13wk</div>
+                        </div>
+                    </div>
+                </div>
+            </div><div class="ai-house-card" style="cursor: pointer; border: 2px solid var(--sky-200); border-radius: var(--radius-md); overflow: hidden; background: white; position: relative; transition: transform 0.18s, box-shadow 0.18s;">
+                <div class="house-img-container" style="position: relative; height: 120px; overflow: hidden; background: #0b1329;">
+                    <img src="Img/house_wood_cabin.png" alt="Native Eco-Wood Cabin" style="width: 100%; height: 100%; object-fit: cover;">
+                    <span style="position: absolute; top: 0.5rem; left: 0.5rem; background: #854d0e; color: white; padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; font-family: var(--font-heading);"><i class="fa-solid fa-tree"></i> Timber</span>
+                    <span style="position: absolute; top: 0.5rem; right: 0.5rem; background: var(--sky-500); color: white; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; font-family: var(--font-heading);"><i class="fa-solid fa-shield"></i> 92% Safety</span>
+                </div>
+                <div class="house-details" style="padding: 0.75rem 0.85rem;">
+                    <h4 class="house-price-label" style="font-family: var(--font-heading); font-size: 1.1rem; color: var(--sky-700); font-weight: 800; line-height: 1; text-align: center; margin-bottom: 0.3rem;">₱700,944</h4>
+                    <span style="font-size: 0.68rem; color: var(--slate-500); font-weight: 600; display: block; text-align: center; margin-bottom: 0.55rem;">50 sqm &nbsp;|&nbsp; 2 Beds &nbsp;|&nbsp; 1 Baths</span>
+
+                    <!-- Area Cost Breakdown -->
+                    
+                    <div style="background: #e0f2fe; border-radius: 8px; padding: 0.45rem 0.6rem; border: 1px solid #0284c722;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                            <span style="font-size: 0.6rem; font-weight: 800; color: #0284c7; font-family: var(--font-heading); letter-spacing: 0.5px;">
+                                <i class="fa-solid fa-ruler-combined" style="margin-right:2px;"></i> AREA COST
+                            </span>
+                            <span style="background: #0284c7; color: white; font-size: 0.55rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: 20px; font-family: var(--font-heading);">RESIDENTIAL(RR)</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <div>
+                                <div style="font-size: 0.6rem; color: #64748b;">50 m² × ₱8,000/m²</div>
+                            </div>
+                            <div style="font-size: 0.88rem; font-weight: 800; color: #0284c7; font-family: var(--font-heading);">₱400,000</div>
+                        </div>
+                    </div>
+                    
+
+                    <div style="display: flex; gap: 0.3rem; margin-top: 0.4rem;">
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">MAT. COST</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">₱203,700</div>
+                        </div>
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">LABOR</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">₱65,000</div>
+                        </div>
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">DURATION</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">10wk</div>
+                        </div>
+                    </div>
+                </div>
+            </div><div class="ai-house-card" style="cursor: pointer; border: 2px solid var(--sky-200); border-radius: var(--radius-md); overflow: hidden; background: white; position: relative; transition: transform 0.18s, box-shadow 0.18s;">
+                <div class="house-img-container" style="position: relative; height: 120px; overflow: hidden; background: #0b1329;">
+                    <img src="Img/Small_House.png" alt="Small Bungalow Concrete" style="width: 100%; height: 100%; object-fit: cover;">
+                    
+                    <span style="position: absolute; top: 0.5rem; right: 0.5rem; background: var(--sky-500); color: white; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 700; font-family: var(--font-heading);"><i class="fa-solid fa-shield"></i> 94% Safety</span>
+                </div>
+                <div class="house-details" style="padding: 0.75rem 0.85rem;">
+                    <h4 class="house-price-label" style="font-family: var(--font-heading); font-size: 1.1rem; color: var(--sky-700); font-weight: 800; line-height: 1; text-align: center; margin-bottom: 0.3rem;">₱721,033</h4>
+                    <span style="font-size: 0.68rem; color: var(--slate-500); font-weight: 600; display: block; text-align: center; margin-bottom: 0.55rem;">45 sqm &nbsp;|&nbsp; 2 Beds &nbsp;|&nbsp; 1 Baths</span>
+
+                    <!-- Area Cost Breakdown -->
+                    
+                    <div style="background: #e0f2fe; border-radius: 8px; padding: 0.45rem 0.6rem; border: 1px solid #0284c722;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                            <span style="font-size: 0.6rem; font-weight: 800; color: #0284c7; font-family: var(--font-heading); letter-spacing: 0.5px;">
+                                <i class="fa-solid fa-ruler-combined" style="margin-right:2px;"></i> AREA COST
+                            </span>
+                            <span style="background: #0284c7; color: white; font-size: 0.55rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: 20px; font-family: var(--font-heading);">RESIDENTIAL(RR)</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <div>
+                                <div style="font-size: 0.6rem; color: #64748b;">45 m² × ₱8,000/m²</div>
+                            </div>
+                            <div style="font-size: 0.88rem; font-weight: 800; color: #0284c7; font-family: var(--font-heading);">₱360,000</div>
+                        </div>
+                    </div>
+                    
+
+                    <div style="display: flex; gap: 0.3rem; margin-top: 0.4rem;">
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">MAT. COST</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">₱244,350</div>
+                        </div>
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">LABOR</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">₱78,000</div>
+                        </div>
+                        <div style="flex: 1; background: #f1f5f9; border-radius: 6px; padding: 0.3rem; text-align: center;">
+                            <div style="font-size: 0.55rem; color: #94a3b8; font-weight: 600;">DURATION</div>
+                            <div style="font-size: 0.7rem; color: #0f172a; font-weight: 700;">12wk</div>
+                        </div>
+                    </div>
+                </div>
+            </div></div>
+                    </div>
+                </section>
+
+                <!-- GIS Side Panel -->
+                <section class="card glass-card feature-card" style="border-left-color: var(--sky-400); height: 100%;">
+                    <div class="card-header" style="margin-bottom: 0.8rem; padding-bottom: 0.5rem;">
+                        <h2 style="font-size: 1.15rem;"><i class="fa-solid fa-earth-philippines"></i> GIS Hazard Auditor
+                        </h2>
+                    </div>
+                    <div class="card-body" style="font-size: 0.8rem; color: var(--slate-600); line-height: 1.5;">
+                        <p>Our geographic threat mapping auditor highlighted layers for the chosen Davao region:</p>
+                        <div style="background: var(--slate-900); padding: 1rem; border-radius: 8px; color: #38bdf8; margin: 0.75rem 0; font-family: monospace;">
+                            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.25rem;">
+                                <span>HAZARD INDEX SCORE:</span>
+                                <strong style="color: var(--orange-500);" id="lblGisScore">72/100 (MODERATE)</strong>
+                            </div>
+                            <div style="margin-top: 0.4rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem; color: #cbd5e1;">
+                                <span>- Flood Basin Hazard: High Lowland Danger</span>
+                                <span>- Landslide Hazard: Low Terrain Slope</span>
+                                <span>- Earthquake Hazard: Moderate Regional Fault line</span>
+                            </div>
+                        </div>
+                        <p>This geospatial threat analysis calculates soil capacities and river flooding patterns to
+                            pre-load mandatory concrete footings.</p>
+
+                        <!-- Material Price Rates Widget -->
+                        <div style="margin-top: 1rem; border-top: 1px solid var(--sky-100); padding-top: 0.8rem;">
+                            <strong style="color: var(--slate-800); font-size: 0.8rem; display: block; margin-bottom: 0.4rem;"><i class="fa-solid fa-coins text-sky"></i> Regional Material Rates</strong>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; font-size: 0.7rem; color: var(--slate-600);">
+                                <span>Cement: <strong>₱280.00/bag</strong></span>
+                                <span>Steel Rebars: <strong>₱75.00/kg</strong></span>
+                                <span>CHB hollow blocks: <strong>₱15.00/pc</strong></span>
+                                <span>Coco Lumber: <strong>₱80.00/bd ft</strong></span>
+                                <span>Sand &amp; Gravel: <strong>₱1,500.00/m³</strong></span>
+                                <span>Daily Labor: <strong>₱650.00/day</strong></span>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic GIS Location Map -->
+                        <div style="margin-top: 1.25rem; border-top: 1px solid var(--sky-100); padding-top: 0.8rem;">
+                            <strong style="color: var(--slate-800); font-size: 0.8rem; display: block; margin-bottom: 0.4rem;"><i class="fa-solid fa-map-location-dot text-sky"></i> Dynamic Regional GIS Map</strong>
+                            <div id="gisMapContainer" style="width: 100%; height: 260px; background: #0b1329; border-radius: var(--radius-sm); border: 2px solid var(--sky-100); overflow: hidden; position: relative; box-shadow: var(--shadow-sm);">
+                                <!-- Interactive SVG map dynamically drawn by system.js -->
+                                <svg id="gisMapSvg" style="width: 100%; height: 100%; display: block;" viewBox="0 0 300 150">
+        <defs>
+            <filter id="glow-effect" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="4" result="blur"></feGaussianBlur>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"></feComposite>
+            </filter>
+            <linearGradient id="gridGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.03"></stop>
+                <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.12"></stop>
+            </linearGradient>
+            <linearGradient id="landGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#0284c7" stop-opacity="0.15"></stop>
+                <stop offset="50%" stop-color="#0369a1" stop-opacity="0.25"></stop>
+                <stop offset="100%" stop-color="#0c4a6e" stop-opacity="0.1"></stop>
+            </linearGradient>
+        </defs>
+        
+        <rect width="300" height="150" fill="url(#gridGradient)"></rect>
+        <g stroke="rgba(56, 189, 248, 0.08)" stroke-width="1">
+            <line x1="50" y1="0" x2="50" y2="150"></line>
+            <line x1="100" y1="0" x2="100" y2="150"></line>
+            <line x1="150" y1="0" x2="150" y2="150"></line>
+            <line x1="200" y1="0" x2="200" y2="150"></line>
+            <line x1="250" y1="0" x2="250" y2="150"></line>
+            <line x1="0" y1="30" x2="300" y2="30"></line>
+            <line x1="0" y1="60" x2="300" y2="60"></line>
+            <line x1="0" y1="90" x2="300" y2="90"></line>
+            <line x1="0" y1="120" x2="300" y2="120"></line>
+        </g>
+        <rect x="5" y="5" width="290" height="140" fill="none" stroke="rgba(56, 189, 248, 0.15)" stroke-width="1" rx="4"></rect>
+        <path d="M 8 15 L 8 8 L 15 8" stroke="#38bdf8" stroke-width="1.5" fill="none" opacity="0.6"></path>
+        <path d="M 292 15 L 292 8 L 285 8" stroke="#38bdf8" stroke-width="1.5" fill="none" opacity="0.6"></path>
+        <path d="M 8 135 L 8 142 L 15 142" stroke="#38bdf8" stroke-width="1.5" fill="none" opacity="0.6"></path>
+        <path d="M 292 135 L 292 142 L 285 142" stroke="#38bdf8" stroke-width="1.5" fill="none" opacity="0.6"></path>
+        
+            <path d="M 50 15 Q 120 10 180 30 T 230 60 Q 200 90 170 100 T 110 80 Q 70 80 50 15 Z" fill="url(#landGradient)" stroke="#0284c7" stroke-width="1.8" filter="url(#glow-effect)"></path>
+            <path d="M 134 102 Q 155 92 155 115 T 138 128 Z" fill="url(#landGradient)" stroke="#0ea5e9" stroke-width="1.5"></path>
+            <path d="M 160 120 C 170 122 180 120 190 122" stroke="rgba(56,189,248,0.15)" stroke-width="1" fill="none"></path>
+            <path d="M 165 125 C 172 127 178 125 185 127" stroke="rgba(56,189,248,0.15)" stroke-width="1" fill="none"></path>
+            
+            <text x="35" y="32" fill="#e0f2fe" opacity="0.75" font-size="9" font-family="var(--font-heading)" font-weight="700" letter-spacing="1">DAVAO DEL NORTE</text>
+            <text x="146" y="137" fill="#38bdf8" opacity="0.7" font-size="7" font-family="monospace">SAMAL ISLAND</text>
+            <text x="210" y="110" fill="#38bdf8" opacity="0.4" font-size="8" font-style="italic">Davao Gulf</text>
+            
+        <g class="map-pin-group" transform="translate(120, 75)">
+            <!-- Ripple Wave 1 -->
+            <circle r="12" fill="none" stroke="var(--orange-500)" stroke-width="1.5" opacity="0.8">
+                <animate attributeName="r" values="4;18" dur="2s" repeatCount="indefinite"></animate>
+                <animate attributeName="opacity" values="0.8;0" dur="2s" repeatCount="indefinite"></animate>
+            </circle>
+            <!-- Ripple Wave 2 -->
+            <circle r="18" fill="none" stroke="var(--orange-500)" stroke-width="1" opacity="0.4">
+                <animate attributeName="r" values="8;26" dur="2s" begin="0.5s" repeatCount="indefinite"></animate>
+                <animate attributeName="opacity" values="0.6;0" dur="2s" begin="0.5s" repeatCount="indefinite"></animate>
+            </circle>
+            <!-- Glow dot center -->
+            <circle r="5.5" fill="var(--orange-500)" stroke="#ffffff" stroke-width="1.5" style="filter: drop-shadow(0 0 3px var(--orange-500));"></circle>
+            
+            <!-- Dynamic flag frame with active Barangay name -->
+            <rect x="8" y="-12" width="75" height="15" fill="rgba(11, 19, 41, 0.85)" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1" rx="2"></rect>
+            <text x="12" y="-2" fill="#ffffff" font-size="6.5" font-family="var(--font-heading)" font-weight="700">San Vicente</text>
+        </g>
+        </svg>
+                                <span id="gisMapCoords" style="position: absolute; bottom: 0.4rem; left: 0.5rem; color: #38bdf8; font-family: monospace; font-size: 0.6rem; letter-spacing: 0.5px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); font-weight: 700;">LAT: 7.3075° N | LON: 125.6853° E</span>
+                            </div>
+                            <!-- AI Calculation Disclaimer -->
+                            <div style="margin-top: 0.6rem; padding: 0.45rem 0.6rem; background: rgba(56, 189, 248, 0.04); border: 1px dashed rgba(56, 189, 248, 0.25); border-radius: var(--radius-sm); font-size: 0.65rem; color: var(--slate-500); line-height: 1.35; display: flex; align-items: flex-start; gap: 0.35rem;">
+                                <i class="fa-solid fa-circle-info text-sky" style="margin-top: 0.1rem; font-size: 0.7rem;"></i>
+                                <span>This is only an AI Calculation. The actual cost still depends on current material
+                                    and labor rates in your specific residence.</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- HOUSE PHOTO ANALYZER SECTION                                  -->
+            <!-- ============================================================ -->
+            <div id="housePhotoAnalyzerSection" style="margin-top:2rem;">
+                <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;">
+                    <div style="width:42px;height:42px;background:linear-gradient(135deg,#0ea5e9,#7c3aed);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(14,165,233,0.3);">
+                        <i class="fa-solid fa-camera-retro" style="color:white;font-size:1.1rem;"></i>
+                    </div>
+                    <div>
+                        <h2 style="font-family:var(--font-heading);font-size:1.15rem;color:var(--slate-800);font-weight:800;margin:0;">
+                            House Photo Analyzer</h2>
+                        <p style="font-size:0.75rem;color:var(--slate-500);margin:0;">Upload a house photo — instant
+                            area estimate (auto-adopts stated sizes like 60 m²), full cost breakdown, blueprint &amp;
+                            workforce plan</p>
+                    </div>
+                </div>
+
+                <!-- Live Location Assessment Context for Photo Analyzer -->
+                <div id="paLocationContextBanner" style="background: white; border: 1.5px solid var(--sky-200); border-radius: var(--radius-md); padding: 0.85rem 1.1rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; box-shadow: 0 2px 6px rgba(14,165,233,0.06);">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span style="background: linear-gradient(135deg, #0ea5e9, #7c3aed); color: white; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14,165,233,0.3);">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </span>
+                        <div>
+                            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: var(--slate-500);">
+                                Target Assessment Location for Photo / Blueprint
+                            </div>
+                            <div id="paActiveLocationText" style="font-size: 0.88rem; font-weight: 800; color: var(--slate-800); font-family: var(--font-heading);">San Vicente, Panabo City, Davao del Norte</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
+                        <span id="paFloodPill" style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 12px; background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0;"><i class="fa-solid fa-water"></i> Flood: Low</span>
+                        <span id="paSeismicPill" style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 12px; background: #fff7ed; color: #ea580c; border: 1px solid #fed7aa;"><i class="fa-solid fa-house-crack"></i> Quake: Moderate</span>
+                        <span id="paSoilPill" style="font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 12px; background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0;"><i class="fa-solid fa-mountain"></i> Soil: Good</span>
+                        <span id="paRiskStatusPill" style="font-size: 0.68rem; font-weight: 800; padding: 0.2rem 0.65rem; border-radius: 12px; background: #ffedd5; color: #c2410c; border: 1px solid #fdba74;">Moderate Risk</span>
+                    </div>
+                </div>
+
+                <!-- Upload Zone -->
+                <div id="photoUploadCard" style="background:linear-gradient(135deg,rgba(14,165,233,0.04),rgba(124,58,237,0.03));border:2px dashed rgba(14,165,233,0.35);border-radius:var(--radius-lg);padding:2.2rem 2rem;text-align:center;cursor:pointer;transition:all 0.25s ease;position:relative;" onclick="document.getElementById('housePhotoInput').click();" ondragover="event.preventDefault();this.style.borderColor='#0ea5e9';" ondragleave="this.style.borderColor='rgba(14,165,233,0.35)';" ondrop="handlePhotoDrop(event);">
+                    <input type="file" id="housePhotoInput" accept="image/*" style="display:none;" onchange="handlePhotoUpload(this.files[0])">
+                    <div style="width:64px;height:64px;background:linear-gradient(135deg,#e0f2fe,#ede9fe);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+                        <i class="fa-solid fa-cloud-arrow-up" style="font-size:1.8rem;color:#0ea5e9;"></i>
+                    </div>
+                    <p style="font-size:1rem;font-weight:700;color:var(--slate-700);margin:0 0 0.4rem;font-family:var(--font-heading);">
+                        Drop your house photo or plan here or click to browse</p>
+                    <p style="font-size:0.75rem;color:var(--slate-500);margin:0 0 0.8rem;">Supports JPG, PNG, WEBP — AI
+                        automatically reads stated areas (e.g. 60 sqm) &amp; generates estimation directly</p>
+                    <div onclick="event.stopPropagation();" style="display:inline-flex;align-items:center;gap:0.4rem;background:white;padding:0.35rem 0.8rem;border-radius:20px;border:1px solid var(--sky-200);box-shadow:0 1px 3px rgba(0,0,0,0.05);font-size:0.72rem;color:var(--slate-600);">
+                        <i class="fa-solid fa-wand-magic-sparkles text-sky"></i>
+                        <span>Optional stated area hint:</span>
+                        <input type="text" id="photoAreaHint" placeholder="Auto or e.g. 60" style="width:70px;padding:0.15rem 0.35rem;border-radius:4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;color:#0284c7;font-size:0.75rem;outline:none;">
+                        <span>m²</span>
+                    </div>
+                </div>
+                <!-- Analyzing Status Banner -->
+                <div id="analyzingOverlay" style="text-align:center;padding:2.5rem;background:linear-gradient(135deg,#0f172a,#1e1b4b);border-radius:var(--radius-lg);display:none;margin-top:1.5rem;box-shadow:var(--shadow-md);">
+                    <div style="width:56px;height:56px;border:4px solid rgba(14,165,233,0.2);border-top-color:#0ea5e9;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 1rem;">
+                    </div>
+                    <p id="analyzingMainText" style="color:#38bdf8;font-weight:700;font-family:var(--font-heading);font-size:1.05rem;margin:0;">
+                        AI Analyzing House Structure &amp; Specifications...</p>
+                    <p id="analyzingSubText" style="color:#94a3b8;font-size:0.78rem;margin:0.4rem 0 0;">Scanning image
+                        for stated floor area (e.g. 60 m²), structural geometry &amp; materials — loading directly...
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2 CONTAINER (Spreadsheet, Blueprints, GIS Auditor Details, Cost Trends side-by-side at bottom) -->
+        <div id="step2Container" style="display: none;">
+            <!-- Back button -->
+            <button type="button" id="btnBackToStep1" class="launch-planner-btn" style="width: auto; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; font-size: 0.85rem; margin-bottom: 1.5rem; background: var(--white); color: var(--sky-700); border: 2px solid var(--sky-200);"><i class="fa-solid fa-arrow-left"></i> Back to Step 1: Change Design</button>
+
+            <!-- Main Content Area: Spec & Table -->
+            <section class="card glass-card feature-card" style="border-left-color: var(--green-500); padding: 2rem; margin-bottom: 2rem;">
+                <div class="card-header" style="margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                    <h2><i class="fa-solid fa-drafting-compass"></i> Blueprint &amp; Cost Estimation</h2>
+                    <button type="button" id="sysExportBtn" class="export-btn" style="padding: 0.6rem 1.2rem; font-size: 0.85rem; border-radius: var(--radius-sm);"><i class="fa-solid fa-file-pdf"></i> Export Project Report</button>
+                </div>
+
+                <div class="card-body">
+                    <!-- Location selected header display -->
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; border-bottom: 1px solid var(--slate-100); padding-bottom: 0.6rem;">
+                        <div>
+                            <span style="font-size: 0.65rem; text-transform: uppercase; color: var(--slate-500); font-weight: 700; display: block;">Construction
+                                Site Location</span>
+                            <strong id="step2Location" style="font-size: 0.95rem; color: var(--slate-800); font-family: var(--font-heading);">San
+                                Vicente, Panabo City, Mindanao</strong>
+                        </div>
+                        <div style="text-align: right;">
+                            <span style="font-size: 0.65rem; text-transform: uppercase; color: var(--slate-500); font-weight: 700; display: block;">Design
+                                Valuation (₱)</span>
+                            <strong id="step2HousePrice" style="font-size: 1.1rem; color: var(--sky-700); font-family: var(--font-heading); font-weight: 800;">₱0.00</strong>
+                        </div>
+                    </div>
+
+                    <!-- Side-by-Side Blueprint & Visuals -->
+                    <div id="visualBlueprintFlex" class="visual-blueprint-flex">
+                        <div id="step2HouseFrame" class="house-visual-frame" style="border: 2px solid var(--sky-100); border-radius: var(--radius-md); overflow: hidden; background: #0b1329; height: 380px; position: relative;">
+                            <img id="step2HouseImg" src="Img/house_elevated.png" alt="AI House Visualization" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" title="Click to view full size &amp; print">
+
+                            <div class="frame-top-bar">
+                                <button type="button" id="btnPrintHousePhoto" class="frame-action-btn btn-print-accent" title="Print House Photo Only">
+                                    <i class="fa-solid fa-print"></i> Print Photo
+                                </button>
+                                <div style="display: flex; gap: 0.35rem;">
+                                    <button type="button" id="btnChangePhotoInStep2" onclick="document.getElementById('housePhotoInput').click();" class="frame-action-btn" style="display: none;">
+                                        <i class="fa-solid fa-rotate"></i> Change Photo
+                                    </button>
+                                    <button type="button" id="btnFullscreenHousePhoto" class="frame-action-btn" title="View Full Size &amp; Print">
+                                        <i class="fa-solid fa-expand"></i> View
+                                    </button>
+                                </div>
+                            </div>
+
+                            <span id="step2HouseBadge" style="position: absolute; bottom: 0.6rem; left: 0.6rem; background: rgba(0,0,0,0.72); color: white; padding: 0.25rem 0.65rem; border-radius: 4px; font-size: 0.72rem; font-weight: 700; font-family: var(--font-heading); cursor: pointer; display: flex; align-items: center; gap: 0.35rem;" title="Click to View &amp; Print">
+                                <i class="fa-solid fa-camera" style="color: #38bdf8;"></i> AI RENDER • Click to
+                                Print
+                            </span>
+                            <span id="step2PhotoSafetyBadge" style="position: absolute; bottom: 0.6rem; right: 0.6rem; background: rgba(2, 132, 199, 0.92); color: white; padding: 0.25rem 0.65rem; border-radius: 4px; font-size: 0.72rem; font-weight: 800; font-family: var(--font-heading); display: flex; align-items: center; gap: 0.35rem; box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 6px;">
+                                <i class="fa-solid fa-shield"></i> <span id="step2PhotoSafetyBadgeText">85% Safety</span>
+                            </span>
+                        </div>
+                        <div id="step2BlueprintFrame" class="blueprint-visual-frame" style="border: 2px solid var(--sky-100); border-radius: var(--radius-md); overflow: hidden; background: #0b1329; height: 380px; position: relative;">
+                            <img id="step2BlueprintImg" src="Img/house_elevated_Blueprint.png" alt="House Blueprint Draft" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" title="Click to enlarge &amp; print blueprint">
+                            <svg id="step2BlueprintSvg" style="width: 100%; height: 100%; display: none; background: rgb(248, 250, 252); cursor: zoom-in;" viewBox="0 0 880 560" title="Click to enlarge &amp; print blueprint"></svg>
+
+                            <div class="frame-top-bar">
+                                <button type="button" id="btnPrintBlueprint" class="frame-action-btn btn-print-accent" title="Print Blueprint Only">
+                                    <i class="fa-solid fa-print"></i> Print Blueprint
+                                </button>
+                                <button type="button" id="btnFullscreenBlueprint" class="frame-action-btn" title="Open High-Res Blueprint Viewer">
+                                    <i class="fa-solid fa-expand"></i> Large Blueprint View
+                                </button>
+                            </div>
+
+                            <span id="step2BlueprintBadge" style="position: absolute; bottom: 0.6rem; left: 0.6rem; background: rgba(0,0,0,0.75); color: white; padding: 0.25rem 0.65rem; border-radius: 4px; font-size: 0.74rem; font-weight: 700; font-family: var(--font-heading); cursor: pointer; display: flex; align-items: center; gap: 0.4rem;" title="Click to View &amp; Print">
+                                <i class="fa-solid fa-drafting-compass" style="color: #38bdf8;"></i> PLAN DRAFT •
+                                Click to Print
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Construction Details & Risk Adaptations -->
+                    <div class="construction-details-grid">
+                        <div>
+                            <span style="font-size: 0.65rem; text-transform: uppercase; color: var(--slate-500); font-weight: 700; display: block; margin-bottom: 0.25rem;">Construction
+                                Details</span>
+                            <div style="font-size: 0.75rem; color: var(--slate-700); line-height: 1.4; display: flex; flex-direction: column; gap: 0.15rem;">
+                                <span><strong>Foundation:</strong> <span id="printFoundationType">Concrete
+                                        Columns</span></span>
+                                <span><strong>Wall Material:</strong> <span id="printWallMaterial">Concrete CHB
+                                        Standard</span></span>
+                                <span><strong>Roof Structure:</strong> <span id="printRoofMaterial">Trusses &amp; GI
+                                        Sheets</span></span>
+                            </div>
+                        </div>
+                        <div>
+                            <span style="font-size: 0.65rem; text-transform: uppercase; color: var(--slate-500); font-weight: 700; display: block; margin-bottom: 0.25rem;">Risk
+                                Adaptations Included</span>
+                            <div style="font-size: 0.75rem; color: var(--green-600); font-weight: 700; display: flex; flex-direction: column; gap: 0.15rem;">
+                                <span id="printRiskAdapt1">✓ Flood-resistant elevated stilt structure</span>
+                                <span id="printRiskAdapt2">✓ Seismic tie-wire rebar column mesh</span>
+                                <span id="printRiskAdapt3">✓ Typhoon-braced roof fascia framing</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cost Mode Switcher (Removes or Includes Land Quality Area Cost & Overhead) -->
+                    <div id="costModeSwitchBar" class="cost-mode-switch-card">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span style="background: var(--sky-500); color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14,165,233,0.3);">
+                                <i class="fa-solid fa-calculator"></i>
+                            </span>
+                            <div>
+                                <div style="font-size: 0.88rem; font-weight: 800; color: var(--slate-800); font-family: var(--font-heading); display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                                    <span>Estimation Scope Switch</span>
+                                    <span id="costModeBadge" style="font-size: 0.65rem; padding: 0.12rem 0.5rem; border-radius: 12px; font-weight: 800; background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd;">FULL
+                                        VALUATION</span>
+                                </div>
+                                <div id="costModeSubtext" style="font-size: 0.73rem; color: var(--slate-500);">
+                                    Includes Land Quality Area Valuation, Government Permits (5%), and Contingency (7%).
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span id="costModeActiveLabel" style="font-size: 0.76rem; font-weight: 700; color: var(--slate-700);">
+                                Remove Land Quality &amp; Area Cost:
+                            </span>
+                            <label class="cost-switch-lbl" title="Click to toggle: remove Area Cost and calculate only Materials + Labor">
+                                <input type="checkbox" id="costModeToggle" onchange="toggleAreaCostExclusion(this.checked)">
+                                <span class="cost-switch-visual"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Adjust Parameters for Photo Analyzed Custom House -->
+                    <div id="customPhotoControls" style="display: none; background: linear-gradient(135deg, rgba(14,165,233,0.05), rgba(124,58,237,0.03)); border: 1.5px solid var(--sky-200); border-radius: var(--radius-md); padding: 1.15rem; margin-bottom: 1.5rem;">
+
+                        <!-- AI Stated Area Adoption Badge -->
+                        <div id="aiAdoptedAreaBanner" style="display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, rgba(14,165,233,0.12), rgba(16,185,129,0.1)); border: 1.5px solid #0284c7; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                            <div style="display: flex; align-items: center; gap: 0.65rem;">
+                                <span style="background: #0284c7; color: white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; flex-shrink: 0;"><i class="fa-solid fa-check-double"></i></span>
+                                <div>
+                                    <div style="font-size: 0.85rem; font-weight: 800; color: #0369a1;">
+                                        ✨ Stated Floor Area Adopted: <span id="aiAdoptedAreaVal" style="background: white; padding: 0.15rem 0.55rem; border-radius: 4px; border: 1px solid #38bdf8; font-weight: 800; font-size: 0.92rem; color: #0284c7;">60
+                                            m²</span>
+                                    </div>
+                                    <div id="aiAdoptedAreaNote" style="font-size: 0.73rem; color: #475569;">Stated 60 m²
+                                        detected. Blueprint layout, materials count, and workforce schedule are
+                                        automatically calibrated to 60 square meters.</div>
+                                </div>
+                            </div>
+                            <span style="font-size: 0.72rem; color: #0284c7; font-weight: 700; background: rgba(255,255,255,0.85); padding: 0.25rem 0.6rem; border-radius: 4px; border: 1px solid #bae6fd;">
+                                <i class="fa-solid fa-arrows-rotate"></i> Live Synchronized
+                            </span>
+                        </div>
+
+                        <!-- Location Assessment & Structural Protection Analysis Card -->
+                        <div id="paLocationHazardCard" style="background: white; border: 1.5px solid var(--sky-200); border-radius: 8px; padding: 1rem 1.15rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(14,165,233,0.06);">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+                                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                                    <span style="background: linear-gradient(135deg, #0ea5e9, #7c3aed); color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14,165,233,0.3);">
+                                        <i class="fa-solid fa-shield-halved"></i>
+                                    </span>
+                                    <div>
+                                        <div style="font-size: 0.88rem; font-weight: 800; color: var(--slate-800); font-family: var(--font-heading);">
+                                            Location Assessment &amp; Blueprint Protection Audit
+                                        </div>
+                                        <div id="paSiteLocationLabel" style="font-size: 0.73rem; color: var(--slate-500); font-weight: 600;">San Vicente, Panabo City, Davao del Norte</div>
+                                    </div>
+                                </div>
+                                <div id="paSafetyScoreHeaderBox" style="text-align: right; display: flex; align-items: center; gap: 0.6rem;">
+                                    <div>
+                                        <div style="font-size: 0.65rem; color: var(--slate-500); font-weight: 700; text-transform: uppercase;">
+                                            Location Safety Rating</div>
+                                        <div id="paSafetyScoreVal" style="font-size: 1.15rem; font-weight: 900; color: rgb(3, 105, 161); font-family: var(--font-heading);">85% Safety</div>
+                                    </div>
+                                    <div id="paSafetyBadgeIcon" style="background: rgb(240, 249, 255); color: rgb(3, 105, 161); border: 1.5px solid rgb(186, 230, 253); border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 900;">
+                                        <i class="fa-solid fa-shield"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Safety Progress Bar -->
+                            <div id="paSafetyProgressBarContainer" style="background: rgb(226, 232, 240); height: 7px; border-radius: 4px; overflow: hidden; margin-bottom: 0.85rem; display: block;">
+                                <div id="paSafetyProgressBar" style="height: 100%; width: 85%; background: linear-gradient(90deg, rgb(14, 165, 233), rgb(2, 132, 199)); transition: width 0.4s;">
+                                </div>
+                            </div>
+
+                            <!-- Hazard Indicators Row -->
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.6rem; margin-bottom: 0.85rem;">
+                                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.45rem 0.6rem;">
+                                    <div style="font-size: 0.65rem; color: #64748b; font-weight: 600;"><i class="fa-solid fa-water" style="color:#0ea5e9;"></i> Flood Risk</div>
+                                    <div id="paFloodLevel" style="font-size: 0.82rem; font-weight: 800; color: #059669;">Low Risk</div>
+                                </div>
+                                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.45rem 0.6rem;">
+                                    <div style="font-size: 0.65rem; color: #64748b; font-weight: 600;"><i class="fa-solid fa-house-crack" style="color:#f97316;"></i> Earthquake Risk
+                                    </div>
+                                    <div id="paSeismicLevel" style="font-size: 0.82rem; font-weight: 800; color: #ea580c;">Moderate Risk</div>
+                                </div>
+                                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.45rem 0.6rem;">
+                                    <div style="font-size: 0.65rem; color: #64748b; font-weight: 600;"><i class="fa-solid fa-mountain" style="color:#10b981;"></i> Soil Stability
+                                    </div>
+                                    <div id="paSoilLevel" style="font-size: 0.82rem; font-weight: 800; color: #059669;">Good (Stable)</div>
+                                </div>
+                                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.45rem 0.6rem;">
+                                    <div style="font-size: 0.65rem; color: #64748b; font-weight: 600;"><i class="fa-solid fa-triangle-exclamation" style="color:#64748b;"></i> Site
+                                        Status
+                                    </div>
+                                    <div id="paOverallStatus" style="font-size: 0.82rem; font-weight: 800; color: #c2410c;">Moderate Risk</div>
+                                </div>
+                            </div>
+
+                            <!-- How Blueprint Protects Occupants in this Location -->
+                            <div style="background: #f0f9ff; border-left: 3.5px solid #0284c7; border-radius: 0 6px 6px 0; padding: 0.7rem 0.9rem; margin-bottom: 0.75rem;">
+                                <div style="font-size: 0.75rem; font-weight: 800; color: #0369a1; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.4rem;">
+                                    <i class="fa-solid fa-shield-virus"></i> How This House &amp; Blueprint Protects You
+                                    At This Location:
+                                </div>
+                                <div id="paProtectionExplanation" style="font-size: 0.75rem; color: #334155; line-height: 1.5;">🌊 <strong>Low Flood Hazard Zone</strong>: Ground slab-on-grade with continuous damp-proof membrane is fully compliant with regional flood zoning.<br><br>⚡ <strong>Seismic Reinforcement Compliance</strong>: Structural plan enforces dual concrete partition headers, continuous strip footings, and integrated column rebar ties to resist regional fault line tremors.<br><br>🌱 <strong>Firm Stable Soil Ground</strong>: High soil compaction and bearing capacity provide optimal foundation anchoring.</div>
+                            </div>
+
+                            <!-- AI Recommendation Advice Bullet List -->
+                            <div>
+                                <div style="font-size: 0.72rem; font-weight: 800; color: var(--slate-700); margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.35rem;">
+                                    <i class="fa-solid fa-list-check" style="color: #0ea5e9;"></i> Location AI
+                                    Engineering Recommendations Applied:
+                                </div>
+                                <ul id="paAdviceList" style="margin: 0; padding-left: 1.25rem; font-size: 0.73rem; color: #475569; line-height: 1.5;"><li><strong>✓ Use reinforced concrete foundation</strong></li><li><strong>✓ Apply seismic reinforcement</strong></li><li><strong>✓ Use elevated floor level</strong></li></ul>
+                            </div>
+
+                            <!-- Safety Tier Summary & Details Button (User Diagram Alignment) -->
+                            <div style="margin-top: 0.75rem; padding-top: 0.65rem; border-top: 1px dashed #cbd5e1; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.6rem;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; flex: 1; min-width: 250px;">
+                                    <span id="paSafetyTierBadge" style="font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.6rem; border-radius: 9999px; background: rgb(240, 249, 255); color: rgb(3, 105, 161); border: 1px solid rgb(186, 230, 253); white-space: nowrap;">85% High / Robust Safety (75%–99%)</span>
+                                    <span id="paSafetyBriefText" style="font-size: 0.72rem; color: #475569; line-height: 1.4;">High structural resilience from Residential(RR) grade and 80 m² footprint paired with local site hazard adaptations.</span>
+                                </div>
+                                <button type="button" id="btnExplainSafetyDetails" onclick="openSafetyRatingExplanationModal()" style="background: #ffffff; color: #0284c7; border: 1.5px solid #0284c7; padding: 0.4rem 0.85rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); transition: all 0.15s ease;">
+                                    <i class="fa-solid fa-circle-question" style="font-size: 0.85rem;"></i>
+                                    <span>Why is it <span id="btnExplainSafetyScoreSpan">85%</span>? View Details</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+                            <div style="font-family: var(--font-heading); font-weight: 700; font-size: 0.88rem; color: var(--slate-800);">
+                                <i class="fa-solid fa-sliders" style="color: var(--sky-500);"></i> Adjust Photo Estimate
+                                Parameters
+                            </div>
+                            <span style="font-size: 0.7rem; color: var(--sky-700); background: var(--sky-100); border: 1px solid var(--sky-200); padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 700;">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> AI Detected from House Photo
+                            </span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
+                            <div>
+                                <label style="font-size: 0.72rem; font-weight: 700; color: var(--slate-600); display: block; margin-bottom: 0.35rem;">Floor
+                                    Area (m²)</label>
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="range" id="paAreaSlider" min="25" max="300" value="80" style="flex: 1;" oninput="updatePhotoArea(this.value)">
+                                    <input type="number" id="paAreaInput" value="80" min="25" max="300" style="width: 58px; border: 2px solid var(--sky-200); border-radius: 6px; padding: 0.2rem; text-align: center; font-weight: 700; color: var(--sky-700); font-size: 0.82rem; outline: none;" oninput="updatePhotoArea(this.value)"> <span style="font-size: 0.72rem; color: var(--slate-500);">m²</span>
+                                </div>
+                            </div>
+                            <div id="paQualityGroup">
+                                <label style="font-size: 0.72rem; font-weight: 700; color: var(--slate-600); display: block; margin-bottom: 0.35rem;">Land
+                                    Quality</label>
+                                <select id="paQualitySelect" style="width: 100%; border: 2px solid var(--sky-200); border-radius: 6px; padding: 0.35rem 0.5rem; font-weight: 700; color: var(--slate-800); font-size: 0.8rem; outline: none; background: white;" onchange="updatePhotoQuality(this.value)">
+                                    <option value="residential">Residential(RR) — ₱8,000/m²</option>
+                                    <option value="commercial">Commercial(CR) — ₱11,000/m²</option>
+                                    <option value="industrial">Industrial(I) — ₱6,500/m²</option>
+                                    <option value="agricultural">Agricultural(A) — ₱1,500/m²</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="font-size: 0.72rem; font-weight: 700; color: var(--slate-600); display: block; margin-bottom: 0.35rem;">Number
+                                    of Floors</label>
+                                <select id="paFloorsSelect" style="width: 100%; border: 2px solid var(--sky-200); border-radius: 6px; padding: 0.35rem 0.5rem; font-weight: 700; color: var(--slate-800); font-size: 0.8rem; outline: none; background: white;" onchange="updatePhotoFloors(this.value)">
+                                    <option value="1">1 Floor (Bungalow)</option>
+                                    <option value="2">2 Floors (Two-Storey)</option>
+                                    <option value="3">3 Floors (Multi-Level)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="font-size: 0.72rem; font-weight: 700; color: var(--slate-600); display: block; margin-bottom: 0.35rem;">Roof
+                                    Profile</label>
+                                <select id="paRoofSelect" style="width: 100%; border: 2px solid var(--sky-200); border-radius: 6px; padding: 0.35rem 0.5rem; font-weight: 700; color: var(--slate-800); font-size: 0.8rem; outline: none; background: white;" onchange="updatePhotoRoof(this.value)">
+                                    <option value="gable">Gable Roof Profile</option>
+                                    <option value="hip">Hip Roof Profile</option>
+                                    <option value="flat">Flat Concrete Roof</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Materials Table -->
+                    <div class="table-responsive" style="margin-bottom: 1.5rem; border-radius: var(--radius-sm); border: 1px solid var(--slate-100);">
+                        <table class="premium-table" style="margin: 0; min-width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th style="font-size: 0.8rem; padding: 0.6rem 0.8rem;">Material / Labor Item</th>
+                                    <th style="font-size: 0.8rem; padding: 0.6rem 0.8rem;">Quantity / Size</th>
+                                    <th style="font-size: 0.8rem; padding: 0.6rem 0.8rem;" class="text-right">Price
+                                        Estimate</th>
+                                </tr>
+                            </thead>
+                            <tbody id="step2MaterialsBody">
+                                <!-- Populated dynamically by system.js -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Labor Workforce Allocator Controls -->
+                    <div style="background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+                            <span style="font-size: 0.85rem; font-weight: 700; color: var(--slate-700);"><i class="fa-solid fa-people-group"></i> Active Labor Workforce</span>
+                            <strong id="laborCrewLabel" style="font-size: 0.95rem; color: var(--sky-700); font-family: var(--font-heading);">2
+                                Workers</strong>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.8rem;">
+                            <input type="range" id="laborCrewSlider" min="2" max="12" value="2" step="2" class="premium-slider" style="flex-grow: 1;">
+                            <span style="font-size: 0.8rem; font-weight: 700; color: var(--slate-500); background: white; border: 1px solid var(--slate-200); padding: 0.25rem 0.5rem; border-radius: 4px;" id="sysCrewBadge">2 Workers</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; border-top: 1px solid var(--slate-200); padding-top: 0.6rem; margin-top: 0.6rem;">
+                            <span style="color: var(--slate-600);">Estimated Construction Duration:</span>
+                            <strong style="color: var(--slate-800);" id="laborTimeDuration">90 Working Days</strong>
+                        </div>
+                        <!-- Trade Composition Workforce Plan -->
+                        <div id="crewCompositionBreakdown" style="margin-top: 0.65rem; padding-top: 0.55rem; border-top: 1px dashed var(--slate-200); font-size: 0.72rem; color: var(--slate-600); display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                            <strong style="color: var(--sky-700);"><i class="fa-solid fa-clipboard-user"></i> Workforce
+                                Plan:</strong>
+                            <span id="crewCompositionText">1 Foreman / Lead Mason, 1 Skilled Carpenter</span>
+                        </div>
+                    </div>
+
+                    <!-- Flashing Slogan (AI only warning sign) -->
+                    <div class="limitations-alert-card" style="margin: 0; padding: 1rem 1.25rem; border-radius: var(--radius-sm); background: #fef2f2; border: 1px solid #fee2e2; border-left: 4px solid #ef4444;">
+                        <i class="fa-solid fa-triangle-exclamation" style="color: #ef4444; font-size: 1.5rem; margin-top: 0.1rem;"></i>
+                        <div>
+                            <h5 style="color: #991b1b; font-size: 0.9rem; font-weight: 700; margin-bottom: 0.15rem;">AI
+                                Simulation Environment Only</h5>
+                            <p style="color: #b91c1c; font-size: 0.75rem; line-height: 1.45;">This planning model is
+                                designed as an interactive estimation suite. All building metrics represent estimated
+                                materials counts. The schedule duration scales dynamically based on worker counts.
+                                Provincial labor rates are calibrated to regional minimum wage structures (Davao Area:
+                                ₱650.00/day).</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bottom Insight Panels: GIS Auditor and Cost Trends Side-by-Side (Step 2 Bottom) -->
+            <div class="insights-bottom-grid" style="margin-bottom: 2rem;">
+
+                <!-- Card A: GIS Hazard Auditor Explanation -->
+                <section class="card glass-card feature-card" style="border-left-color: var(--sky-500); height: 100%;">
+                    <div class="card-header" style="margin-bottom: 0.8rem; padding-bottom: 0.5rem;">
+                        <h2 style="font-size: 1.15rem;"><i class="fa-solid fa-earth-philippines"></i> GIS Hazard Auditor
+                            Analysis</h2>
+                    </div>
+                    <div class="card-body" style="font-size: 0.8rem; color: var(--slate-600); line-height: 1.5;">
+                        <p>Our **Geospatial Information System (GIS)** audits environmental safety parameters to
+                            pre-determine structural reinforcement requirements:</p>
+                        <ul style="margin-left: 1.2rem; margin-top: 0.4rem; display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 1rem;">
+                            <li><strong>Flood Lowlands mapping</strong>: Evaluates historical rain patterns and storm
+                                basin levels to enforce raised column foundations.</li>
+                            <li><strong>Seismic Fault auditors</strong>: Measures active distance coordinates to
+                                phivolcs regional shear fault lines.</li>
+                            <li><strong>Landslide assessment</strong>: Scans soil moisture indexes and sloped land
+                                terrains to check stability.</li>
+                        </ul>
+                        <div style="background: rgba(14, 165, 233, 0.04); border-radius: var(--radius-sm); padding: 0.75rem 1rem; display: flex; align-items: flex-start; gap: 0.5rem; border: 1px solid var(--sky-100);">
+                            <i class="fa-solid fa-circle-check text-sky" style="font-size: 1.1rem; margin-top: 0.15rem;"></i>
+                            <span style="font-size: 0.75rem; color: var(--sky-700); font-weight: 600;">Geospatial safety
+                                is secured: Recommendations dynamically calibrate structural steel cages and footing
+                                depths.</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Card B: Predictive Material Cost Trends -->
+                <section class="card glass-card feature-card" style="border-left-color: var(--orange-500); height: 100%;">
+                    <div class="card-header" style="margin-bottom: 0.8rem; padding-bottom: 0.5rem;">
+                        <h2 style="font-size: 1.15rem;"><i class="fa-solid fa-chart-line"></i> Material Cost Trends
+                            &amp; Forecasts</h2>
+                    </div>
+                    <div class="card-body" style="font-size: 0.8rem; color: var(--slate-600); line-height: 1.5;">
+                        <p>Time series forecasting monitors regional raw materials inflation over next month's outlook:
+                        </p>
+
+                        <!-- Forecast items list -->
+                        <div style="display: flex; flex-direction: column; gap: 0.6rem; margin: 0.75rem 0;">
+                            <!-- Steel Bar -->
+                            <div style="background: var(--slate-50); border: 1px solid var(--slate-200); padding: 0.5rem 0.8rem; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: 600; color: var(--slate-800);">Steel Rebars: ₱75.00
+                                    $\rightarrow$ ₱81.00</span>
+                                <strong style="color: #ef4444; font-size: 0.75rem;">+8.0% Next Month <i class="fa-solid fa-arrow-trend-up"></i></strong>
+                            </div>
+
+                            <!-- Cement -->
+                            <div style="background: var(--slate-50); border: 1px solid var(--slate-200); padding: 0.5rem 0.8rem; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: 600; color: var(--slate-800);">Portland Cement: ₱280.00
+                                    $\rightarrow$ ₱302.00</span>
+                                <strong style="color: #ef4444; font-size: 0.75rem;">+7.8% Next Month <i class="fa-solid fa-arrow-trend-up"></i></strong>
+                            </div>
+
+                            <!-- Lumber -->
+                            <div style="background: var(--slate-50); border: 1px solid var(--slate-200); padding: 0.5rem 0.8rem; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-weight: 600; color: var(--slate-800);">Coco Lumber: ₱80.00
+                                    $\rightarrow$ ₱85.00</span>
+                                <strong style="color: #ef4444; font-size: 0.75rem;">+6.2% Next Month <i class="fa-solid fa-arrow-trend-up"></i></strong>
+                            </div>
+                        </div>
+
+                        <p style="font-size: 0.75rem; color: var(--slate-500); line-height: 1.4;">Global transport
+                            indices and regional quarry clearances keep concrete and steel bags elevated. Securing
+                            supplier allocations immediately blocks future price escalations.</p>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Detailed Export Proposal Modal Layout (Printable Final Project Report) -->
+    <div class="export-modal" id="sysExportModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15,23,42,0.6); z-index: 1000; align-items: center; justify-content: center; padding: 2rem; overflow-y: auto;">
+        <div class="export-modal-content" style="background: white; max-width: 800px; width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden; display: flex; flex-direction: column; max-height: 90vh;">
+            <div class="export-actions" style="padding: 1rem 1.5rem; background: var(--slate-50); border-bottom: 1px solid var(--slate-100); display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="font-family: var(--font-heading); font-size: 1.15rem; color: var(--slate-900); font-weight: 700; margin: 0;">
+                    <i class="fa-solid fa-file-pdf text-sky"></i> Printable Final Project Planning Report
+                </h3>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn-print" id="btnPrintSysActual" style="background: var(--sky-600); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem;"><i class="fa-solid fa-print"></i> Print Report</button>
+                    <button class="btn-close" id="btnCloseSysModal" style="background: var(--slate-200); color: var(--slate-700); border: none; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer;">Close</button>
+                </div>
+            </div>
+
+            <div id="printSysArea" class="print-area" style="padding: 2.2rem; overflow-y: auto; flex-grow: 1; color: #1e293b;">
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 1.4rem; color: var(--sky-700); letter-spacing: -0.5px; margin: 0;">
+                        AI PROGRESS HOUSING ESTIMATOR</h2>
+                    <h3 style="font-family: var(--font-heading); font-weight: 600; font-size: 0.9rem; color: var(--slate-500); margin: 0.2rem 0 0 0;">
+                        Printable Final Project Planning Report</h3>
+                    <p style="font-size: 0.7rem; color: var(--slate-400); margin-top: 0.15rem;" id="printSysDateString">
+                        Generated on: </p>
+                </div>
+                <hr style="border: 0; border-top: 2px solid var(--sky-100); margin-bottom: 1.5rem;">
+
+                <div style="margin-bottom: 1.5rem; display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem;">
+                    <div>
+                        <h4 style="font-family: var(--font-heading); font-size: 0.9rem; color: var(--slate-900); margin-bottom: 0.4rem; border-bottom: 1px solid var(--sky-100); padding-bottom: 0.2rem;">
+                            Location Analysis Assessment</h4>
+                        <table class="print-table" style="width: 100%; border-collapse: collapse; font-size: 0.75rem; line-height: 1.4;">
+                            <tbody><tr>
+                                <td style="padding: 0.3rem 0; width: 45%;"><strong>Province:</strong></td>
+                                <td style="padding: 0.3rem 0;" id="printProvince">Davao del Norte</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.3rem 0;"><strong>City/Municipality:</strong></td>
+                                <td style="padding: 0.3rem 0;" id="printCity">Panabo City</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.3rem 0;"><strong>Barangay:</strong></td>
+                                <td style="padding: 0.3rem 0;" id="printBarangay">San Vicente</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.3rem 0;"><strong>Geospatial Risk Level:</strong></td>
+                                <td style="padding: 0.3rem 0; font-weight: 700; color: #ef4444;" id="printRiskRating">
+                                    Moderate Risk</td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                    <div>
+                        <h4 style="font-family: var(--font-heading); font-size: 0.9rem; color: var(--slate-900); margin-bottom: 0.4rem; border-bottom: 1px solid var(--sky-100); padding-bottom: 0.2rem;">
+                            House Specifications</h4>
+                        <table class="print-table" style="width: 100%; border-collapse: collapse; font-size: 0.75rem; line-height: 1.4;">
+                            <tbody><tr>
+                                <td style="padding: 0.3rem 0; width: 45%;"><strong>Floor Area Size:</strong></td>
+                                <td style="padding: 0.3rem 0;" id="printArea">60 sqm</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.3rem 0;"><strong>Bedrooms / Baths:</strong></td>
+                                <td style="padding: 0.3rem 0;" id="printBedBaths">3 Beds / 2 Baths</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.3rem 0;"><strong>Wall Material:</strong></td>
+                                <td style="padding: 0.3rem 0;" id="printWalls">Solid Timber Wood Panel</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.3rem 0;"><strong>Roofing Profile:</strong></td>
+                                <td style="padding: 0.3rem 0;" id="printRoof">GI Steel Braced Frame</td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="font-family: var(--font-heading); font-size: 0.9rem; color: var(--slate-900); margin-bottom: 0.4rem; border-bottom: 1px solid var(--sky-100); padding-bottom: 0.2rem;">
+                        Geospatial Hazard Score &amp; Details</h4>
+                    <table class="print-table" style="width: 100%; border-collapse: collapse; font-size: 0.75rem; line-height: 1.4;">
+                        <tbody><tr>
+                            <td style="padding: 0.3rem 0; width: 45%;"><strong>GIS Hazard Score:</strong></td>
+                            <td style="padding: 0.3rem 0; font-weight: 700; color: #ef4444;" id="printGisScore">72/100
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.3rem 0;"><strong>Active Threat Warnings:</strong></td>
+                            <td style="padding: 0.3rem 0; color: var(--slate-600);" id="printGisDesc">Moderate Flood
+                                Basin lowlands / Davao Fault Line proximity checks completed.</td>
+                        </tr>
+                    </tbody></table>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="font-family: var(--font-heading); font-size: 0.9rem; color: var(--slate-900); margin-bottom: 0.4rem; border-bottom: 1px solid var(--sky-100); padding-bottom: 0.2rem;">
+                        Construction Timeline Summary</h4>
+                    <table class="print-table" style="width: 100%; border-collapse: collapse; font-size: 0.75rem; line-height: 1.4;">
+                        <tbody><tr>
+                            <td style="padding: 0.3rem 0; width: 45%;"><strong>Workers Crew Size:</strong></td>
+                            <td style="padding: 0.3rem 0;" id="printCrew">2 Workers</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.3rem 0;"><strong>Estimated Completion Time:</strong></td>
+                            <td style="padding: 0.3rem 0; font-weight: 700;" id="printDuration">90 Working Days</td>
+                        </tr>
+                    </tbody></table>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="font-family: var(--font-heading); font-size: 0.9rem; color: var(--slate-900); margin-bottom: 0.5rem; border-bottom: 1px solid var(--sky-100); padding-bottom: 0.25rem;">
+                        Blueprint Plan Drafts</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: center; margin-top: 0.5rem;">
+                        <div id="printHouseContainer">
+                            <img id="printHouseImg" src="Img/house_elevated.png" style="width: 100%; height: 140px; object-fit: cover; border-radius: 6px; border: 1px solid var(--slate-200);" alt="AI House">
+                            <span id="printHouseLabel" style="font-size: 0.65rem; color: var(--slate-500); display: block; margin-top: 0.2rem;">RECOMMENDED
+                                AI HOUSE RENDER</span>
+                        </div>
+                        <div id="printBlueprintContainer">
+                            <img id="printBlueprintImg" src="Img/house_elevated_Blueprint.png" style="width: 100%; height: 140px; object-fit: cover; border-radius: 6px; border: 1px solid var(--slate-200);" alt="Blueprint Plan">
+                            <span style="font-size: 0.65rem; color: var(--slate-500); display: block; margin-top: 0.2rem;">BLUEPRINT
+                                TECHNICAL PLAN</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 style="font-family: var(--font-heading); font-size: 0.9rem; color: var(--slate-900); margin-bottom: 0.4rem; border-bottom: 1px solid var(--sky-100); padding-bottom: 0.2rem;">
+                        Complete Cost Breakdown Table</h4>
+                    <table class="print-table compact" style="width: 100%; border-collapse: collapse; font-size: 0.75rem;" id="printMaterialsTable">
+                        <thead>
+                            <tr style="border-bottom: 1.5px solid var(--slate-300); text-align: left;">
+                                <th style="padding: 0.4rem 0;">Line Cost Component</th>
+                                <th style="padding: 0.4rem 0;">Quantity / Configuration</th>
+                                <th style="padding: 0.4rem 0; text-align: right;">Valuation (₱)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="printMaterialsTableBody">
+                            <!-- Copied from active table during export -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin-top: 2rem; border-top: 1px solid var(--slate-200); padding-top: 1rem; font-size: 0.65rem; color: var(--slate-400); text-align: center; line-height: 1.45;">
+                    <strong>AI-Powered Capstone Planning System Report.</strong> All costs represent dynamic machine
+                    learning estimations in Philippine currency (₱). Note: This is only an AI Calculation; actual costs
+                    still depend on local market rates in your specific residence.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox Image / Large Blueprint Preview Modal -->
+    <div id="imageLightbox" class="lightbox-modal" style="display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(10px); justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease;">
+        <div class="lightbox-container" style="position: relative; width: 95vw; max-width: 1320px; max-height: 92vh; display: flex; flex-direction: column; align-items: center;">
+
+            <!-- Standard Image Preview (House Photos / Renders) -->
+            <img id="lightboxImg" src="" alt="Expanded Preview" style="max-width: 100%; max-height: 76vh; object-fit: contain; border-radius: var(--radius-md); border: 4px solid var(--white); box-shadow: var(--shadow-lg); transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+
+            <!-- Lightbox Image Action Bar for Printing and Saving -->
+            <div id="lightboxImgActions" style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-top: 0.75rem; flex-wrap: wrap;">
+                <button type="button" id="btnLightboxPrint" style="background: #0284c7; color: white; border: none; padding: 0.5rem 1.3rem; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 0.45rem; box-shadow: 0 4px 14px rgba(2,132,199,0.4); transition: transform 0.15s ease, background 0.15s ease;">
+                    <i class="fa-solid fa-print"></i> Print This Picture
+                </button>
+                <button type="button" id="btnLightboxDownload" style="background: rgba(255,255,255,0.18); color: white; border: 1px solid rgba(255,255,255,0.35); padding: 0.5rem 1.15rem; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 0.45rem;">
+                    <i class="fa-solid fa-download"></i> Save Image
+                </button>
+            </div>
+
+            <!-- High-Resolution Architectural Blueprint CAD Drafting Viewer -->
+            <div id="lightboxSvgWrapper" style="display: none; width: 100%; height: 84vh; background: #ffffff; border-radius: var(--radius-md); border: 3px solid #0284c7; box-shadow: 0 25px 60px rgba(0,0,0,0.8); flex-direction: column; overflow: hidden;">
+                <!-- Header toolbar -->
+                <div style="background: #0f172a; padding: 0.65rem 1.25rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0284c7; flex-wrap: wrap; gap: 0.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.6rem; color: white;">
+                        <i class="fa-solid fa-drafting-compass" style="color: #38bdf8; font-size: 1.15rem;"></i>
+                        <div>
+                            <span id="lightboxSvgTitle" style="font-weight: 800; font-family: var(--font-heading); font-size: 0.95rem; letter-spacing: 0.5px; color: #f8fafc; display: block;">ARCHITECTURAL
+                                FLOOR PLAN BLUEPRINT</span>
+                            <span id="lightboxSvgSubtitle" style="font-size: 0.72rem; color: #94a3b8; font-family: monospace;">Scale 1:75 •
+                                Technical Specifications • Davao Regional Code Compliant</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <button type="button" id="btnBpZoomIn" style="background: #1e293b; color: #38bdf8; border: 1px solid #334155; padding: 0.35rem 0.7rem; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.35rem;"><i class="fa-solid fa-magnifying-glass-plus"></i> Zoom In</button>
+                        <button type="button" id="btnBpZoomOut" style="background: #1e293b; color: #38bdf8; border: 1px solid #334155; padding: 0.35rem 0.7rem; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.35rem;"><i class="fa-solid fa-magnifying-glass-minus"></i> Zoom Out</button>
+                        <button type="button" id="btnBpReset" style="background: #1e293b; color: #cbd5e1; border: 1px solid #334155; padding: 0.35rem 0.7rem; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.35rem;"><i class="fa-solid fa-arrows-rotate"></i> Reset</button>
+                        <button type="button" id="btnBpDownload" style="background: #0284c7; color: white; border: none; padding: 0.35rem 0.85rem; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.35rem;"><i class="fa-solid fa-download"></i> Save SVG CAD</button>
+                        <button type="button" id="btnBpPrint" style="background: #059669; color: white; border: none; padding: 0.35rem 0.85rem; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.35rem;"><i class="fa-solid fa-print"></i> Print Blueprint</button>
+                    </div>
+                </div>
+                <!-- Blueprint display viewport -->
+                <div id="lightboxSvgViewport" style="flex: 1; width: 100%; height: calc(100% - 50px); overflow: auto; display: flex; justify-content: center; align-items: center; background: #f8fafc; padding: 0.75rem; position: relative;">
+                    <div id="lightboxSvgInner" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transition: transform 0.2s ease-out; transform-origin: center center;">
+                        <!-- Injected vector SVG at massive dimensions -->
+                    </div>
+                </div>
+            </div>
+
+            <div id="lightboxCaption" style="color: var(--white); margin-top: 0.8rem; font-family: var(--font-heading); font-weight: 700; font-size: 1rem; text-shadow: 0 2px 4px rgba(0,0,0,0.8); text-align: center;">
+                Image Caption</div>
+            <button id="btnCloseLightbox" class="lightbox-close-btn" style="position: absolute; top: -1.25rem; right: -1.25rem; background: #ef4444; color: white; border: 2px solid white; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 10;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+    </div>
+
+    <!-- Safety Rating & Calculation Explanation Modal -->
+    <div id="safetyExplanationModal" class="lightbox-modal" style="display: none; position: fixed; z-index: 2100; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.78); backdrop-filter: blur(6px); justify-content: center; align-items: center; opacity: 0; transition: opacity 0.25s ease;">
+        <div style="position: relative; width: 92vw; max-width: 820px; max-height: 90vh; background: #ffffff; border-radius: 12px; box-shadow: 0 25px 60px rgba(0,0,0,0.35); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #cbd5e1;">
+            
+            <!-- Modal Header -->
+            <div style="padding: 1rem 1.35rem; background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 0.65rem;">
+                    <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; font-family: var(--font-heading); color: #ffffff;">Safety Rating &amp; Structural Engineering Audit</h3>
+                        <p style="margin: 0; font-size: 0.72rem; color: #e0f2fe;">Mathematical breakdown based on Floor Area, Material Quality, and Geological Site Hazards.</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeSafetyRatingExplanationModal()" style="background: rgba(255,255,255,0.18); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s ease;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body (Scrollable) -->
+            <div style="padding: 1.25rem 1.4rem; overflow-y: auto; flex: 1; font-size: 0.8rem; color: #334155; line-height: 1.5;">
+                
+                <!-- Active House Current Calculation Summary -->
+                <div id="modalActiveHouseScoreCard" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 1rem 1.15rem; margin-bottom: 1.25rem;">
+                    <!-- Populated dynamically by system.js -->
+                </div>
+
+                <!-- Point-by-Point Calculation Breakdown -->
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 0.86rem; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 0.4rem;">
+                        <i class="fa-solid fa-calculator" style="color: #0284c7;"></i> Point-by-Point Score Calculation
+                    </h4>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden;">
+                        <thead>
+                            <tr style="background: #f1f5f9; text-align: left; color: #475569; border-bottom: 1px solid #cbd5e1;">
+                                <th style="padding: 0.5rem 0.75rem; width: 32%;">Structural Factor</th>
+                                <th style="padding: 0.5rem 0.75rem; width: 48%;">House &amp; Location Input</th>
+                                <th style="padding: 0.5rem 0.75rem; width: 20%; text-align: right;">Points Impact</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modalCalcTableBody">
+                            <!-- Populated dynamically by system.js -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- The 4 Official Safety Tiers Reference Guide -->
+                <div>
+                    <h4 style="margin: 0 0 0.65rem 0; font-size: 0.86rem; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 0.4rem;">
+                        <i class="fa-solid fa-layer-group" style="color: #0284c7;"></i> Safety Rating Tiers &amp; Criteria Guide
+                    </h4>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <!-- Tier 1: 0% - 49% -->
+                        <div style="border: 1px solid #fecaca; background: #fff5f5; border-radius: 8px; padding: 0.8rem 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                                <span style="font-weight: 800; color: #b91c1c; font-size: 0.82rem; display: flex; align-items: center; gap: 0.35rem;">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> 0% – 49% : Low / Critical Safety
+                                </span>
+                                <span style="font-size: 0.68rem; font-weight: 700; background: #fee2e2; color: #991b1b; padding: 0.15rem 0.5rem; border-radius: 4px;">High Vulnerability</span>
+                            </div>
+                            <div style="font-size: 0.74rem; color: #7f1d1d; line-height: 1.45;">
+                                <strong>Why it is Low:</strong> The structure uses light, unreinforced materials (such as Agricultural ₱1,500/m² or unbraced timber) or has large unbraced spans (&gt;120 m² or 3 storeys) in moderate/high hazard zones. Without reinforced concrete columns and foundation anchoring, it has severe vulnerability to earthquake shearing, storm winds, or water intrusion.
+                            </div>
+                        </div>
+
+                        <!-- Tier 2: 50% - 74% -->
+                        <div style="border: 1px solid #fed7aa; background: #fffaf5; border-radius: 8px; padding: 0.8rem 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                                <span style="font-weight: 800; color: #c2410c; font-size: 0.82rem; display: flex; align-items: center; gap: 0.35rem;">
+                                    <i class="fa-solid fa-circle-exclamation"></i> 50% – 74% : Mid / Moderate Safety
+                                </span>
+                                <span style="font-size: 0.68rem; font-weight: 700; background: #ffedd5; color: #9a3412; padding: 0.15rem 0.5rem; border-radius: 4px;">Standard Domestic</span>
+                            </div>
+                            <div style="font-size: 0.74rem; color: #7c2d12; line-height: 1.45;">
+                                <strong>Why it is Mid:</strong> Built with conventional residential materials (Residential ₱8,000/m² or Industrial ₱6,500/m²) suitable for everyday normal weather. However, regional hazards (such as active fault lines or seasonal monsoons) combined with medium-to-large floor areas put elevated strain on partition walls. Adequate for normal conditions, but requires seismic grade beams or elevated slabs for severe natural disasters.
+                            </div>
+                        </div>
+
+                        <!-- Tier 3: 75% - 99% -->
+                        <div style="border: 1px solid #bae6fd; background: #f0f9ff; border-radius: 8px; padding: 0.8rem 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                                <span style="font-weight: 800; color: #0369a1; font-size: 0.82rem; display: flex; align-items: center; gap: 0.35rem;">
+                                    <i class="fa-solid fa-shield-check"></i> 75% – 99% : High / Robust Safety
+                                </span>
+                                <span style="font-size: 0.68rem; font-weight: 700; background: #e0f2fe; color: #075985; padding: 0.15rem 0.5rem; border-radius: 4px;">Engineered Protection</span>
+                            </div>
+                            <div style="font-size: 0.74rem; color: #0c4a6e; line-height: 1.45;">
+                                <strong>Why it is High:</strong> Built with certified reinforced concrete masonry (Residential ₱8,000/m² or Commercial ₱11,000/m²), optimal compact-to-balanced footprint (≤80 m²), and proactive blueprint adaptations (continuous strip footings, elevated floor elevation, rebar tie spacing). It effectively neutralizes local geological and meteorological hazards.
+                            </div>
+                        </div>
+
+                        <!-- Tier 4: 100% -->
+                        <div style="border: 1.5px solid #86efac; background: #f0fdf4; border-radius: 8px; padding: 0.8rem 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                                <span style="font-weight: 800; color: #15803d; font-size: 0.82rem; display: flex; align-items: center; gap: 0.35rem;">
+                                    <i class="fa-solid fa-award"></i> 100% : Maximum Certified Safety (Special Case)
+                                </span>
+                                <span style="font-size: 0.68rem; font-weight: 700; background: #dcfce7; color: #166534; padding: 0.15rem 0.5rem; border-radius: 4px;">Flawless Resilience</span>
+                            </div>
+                            <div style="font-size: 0.74rem; color: #14532d; line-height: 1.45;">
+                                <strong>How 100% is Earned:</strong> This rating is awarded only when 4 critical engineering pillars are flawlessly met simultaneously: (1) Low-hazard geological site zoning, (2) Heavy Commercial-grade reinforced concrete (₱11,000/m²) with high-ductility rebar framing, (3) Compact rigid single-storey footprint (≤55 m²) preventing lateral drift, and (4) Aerodynamic 4-pitch hip roof profile deflecting peak typhoon wind pressures from all directions.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div style="padding: 0.75rem 1.4rem; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end;">
+                <button type="button" onclick="closeSafetyRatingExplanationModal()" style="background: #0284c7; color: white; border: none; padding: 0.5rem 1.3rem; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: background 0.15s ease;">
+                    Close Details
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dedicated Single-Picture Printable Container (House Photo Only or Blueprint Only) -->
+    <div id="soloPrintContainer" class="solo-print-container" style="display: none;"></div>
+
+    <!-- Tesseract OCR Engine for automatic client-side stated-area detection from photos -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <!-- Script loading -->
+    <script src="system.js"></script>
+
+
+</body></html>
